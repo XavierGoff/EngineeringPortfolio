@@ -7,10 +7,10 @@
 const PROJECTS = [
   {
     category: "Robotics",
-    title: "Blackout Robotics — Season 1",
-    subtitle: "FTC — Power Play",
+    title: "Blackout Robotics — Power Play",
+    subtitle: "FTC — 19280 · UK235",
     years: "2022–23",
-    description: "EDIT: describe the robot — your role, the mechanism you designed, what made it clever, and what you'd do differently. Two to four sentences.",
+    description: "Design Lead for the full robot CAD and mechanism design. My main contribution was the arm's virtual four-bar linkage, which gave a compact, controlled motion. The servo horn stripped during competition, so next time I'd design a more serviceable drive solution.",
     awards: [
       "South East Regional — Winning Alliance Captain",
       "South East Regional — Inspire Award",
@@ -21,12 +21,19 @@ const PROJECTS = [
   },
   {
     category: "Robotics",
-    title: "Competition Robot — Season 2",
-    subtitle: "FTC/FRC — [ game name ] · placeholder",
-    years: "2024–2025",
-    description: "Season two: what you carried over, what you reinvented. Recruiters love seeing iteration between seasons — call out a specific improvement with a number if you can (cycle time, weight, reliability).",
-    awards: ["Placeholder award chip"],
-    image: null
+    title: "Blackout Robotics — Centerstage",
+    subtitle: "FTC — 19280 · UK235",
+    years: "2023–24",
+    description: "EDIT: season two — what you carried over, what you reinvented. Call out a specific improvement with a number if you can.",
+    awards: [
+      { label: "FRC Dean's List Award — 1884", highlight: true },
+      "South East Regional — Winning Alliance Captain",
+      "South East Regional — Inspire Award",
+      "UK National Champions",
+      "UK Control Award"
+    ],
+    image: "photos/blackout-s2-front.png",
+    imageHover: "photos/blackout-s2-iso.png"
   },
   {
     category: "Personal",
@@ -57,7 +64,14 @@ const SKILLS = [
   { cat: "Fab",  name: "3D Printing" },
   { cat: "Fab",  name: "Machining" },
   { cat: "Elec", name: "Circuit Design" },
-  { cat: "Elec", name: "Soldering / PCB" }
+  { cat: "Elec", name: "Soldering / PCB" },
+  { cat: "CAD",  name: "Onshape" },
+  { cat: "Code", name: "Vibecoding" },
+  { cat: "Elec", name: "PCB Design" },
+  { cat: "Code", name: "Java" },
+  { cat: "Fab",  name: "Laser Cutting" },
+  { cat: "Tools", name: "Excel" },
+  { cat: "Team", name: "Teaching / Mentoring" }
 ];
 
 /* ============================================================
@@ -111,10 +125,14 @@ PROJECTS.forEach((p, i) => {
     <div class="proj-body">
       <div class="reveal d1">
         <p class="proj-desc">${p.description}</p>
-        ${p.awards.length ? `<div class="awards">${p.awards.map(a => `<span class="award">${a}</span>`).join('')}</div>` : ''}
+        ${p.awards.length ? `<div class="awards">${p.awards.map(a => {
+          const label = a.label || a;
+          const cls = a.highlight ? 'award special' : 'award';
+          return `<span class="${cls}">${label}</span>`;
+        }).join('')}</div>` : ''}
       </div>
-      <div class="proj-img reveal d2">
-        ${p.image ? `<img src="${p.image}" alt="${p.title}">` : `${fig} — IMAGE PENDING`}
+      <div class="proj-img reveal d2 ${p.image ? 'has-img' : ''}">
+        ${p.image ? `<img class="base-img" src="${p.image}" alt="${p.title}">` : `${fig} — IMAGE PENDING`}
         ${p.image && p.imageHover ? `<img class="hover-img" src="${p.imageHover}" alt="${p.title} — alternate view">` : ''}
       </div>
     </div>`;

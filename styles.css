@@ -224,7 +224,7 @@ h2.section-title{
   font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;color:var(--ink-dim);
 }
 /* Real image: in the PROJECTS array below set image:"photos/robot.jpg" */
-.proj-img img{width:100%;height:100%;object-fit:cover;display:block}
+.proj-img img{width:100%;height:100%;object-fit:contain;display:block}
 .awards{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .award{
   font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--ink);
@@ -312,6 +312,17 @@ footer{
 .credit{color:var(--accent);text-decoration:none}
 .credit:hover{text-decoration:underline}
 
-/* ---------- project image hover-swap (second view fades in) ---------- */
-.proj-img .hover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease}
-.proj-img:hover .hover-img{opacity:1}
+/* ---------- project image hover-swap (true replace, transparent-safe) ---------- */
+.proj-img.has-img{background:none;border:none;box-shadow:none}
+.proj-img .base-img{transition:opacity .75s cubic-bezier(.4,0,.2,1)}
+.proj-img .hover-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;
+  transform:scale(.985);
+  transition:opacity .75s cubic-bezier(.4,0,.2,1), transform .75s cubic-bezier(.4,0,.2,1);
+}
+.proj-img:hover .hover-img{opacity:1;transform:scale(1)}
+.proj-img:hover .base-img{opacity:0}
+
+/* ---------- highlighted personal award ---------- */
+.award.special{background:var(--accent);border-color:var(--accent);color:#fff}
+.award.special::before{color:#fff}
