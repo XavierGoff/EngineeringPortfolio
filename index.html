@@ -25,6 +25,7 @@
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </div>
@@ -67,7 +68,6 @@
         <path class="sketch-path" d="M24 76 L42 58 L34 50 Z"/>
       </g>
     </svg>
-    <div class="logo-caption" id="sketch-caption">NO. 00 — THE MARK · 0%</div>
   </div>
 </div>
 
@@ -78,22 +78,32 @@
   <div class="rule"></div>
   <div class="about-grid">
     <div class="photo-frame reveal d1">
-      <div class="ph-label">NO. 01 — PORTRAIT<br>[ PHOTO PENDING ]</div>
+      <!-- save your portrait as photos/portrait.jpg -->
+      <img src="photos/portrait.jpg" alt="Xavier Goff">
     </div>
     <div class="about-text reveal d2">
       <!-- EDIT: replace with your own bio -->
-      <p>Hi, I'm <b>Xavier Goff</b> — an engineering student who learns by building. From robotics
-      competitions to independent projects, I like taking ideas from a sketch on grid paper to
-      hardware that actually works.</p>
-      <p>This page is a running log of what I've designed, built, broken, and rebuilt. Every project
-      below taught me something a classroom couldn't.</p>
-      <p><b>Currently:</b> [ your school / program / what you're working on right now ]</p>
+      <p>Hi, I'm <b>Xavier Goff</b> — a Design Engineering student who learns by building. This page
+      is a running log of what I've designed, built, broken, and rebuilt.</p>
+      <div class="now-list">
+        <div class="now-item">
+          <span class="now-label">Studying</span>
+          <div class="now-body"><b>Design Engineering MEng</b><span class="now-sub">Imperial College London</span></div>
+        </div>
+        <div class="now-item">
+          <span class="now-label">Working</span>
+          <div class="now-body"><b>St Paul's Girls' School</b><span class="now-sub">CS / CT Coordinator · Robotics Mentor</span></div>
+        </div>
+        <div class="now-item">
+          <span class="now-label">Working</span>
+          <div class="now-body"><b>Stag On Defense</b><span class="now-sub">Embedded Systems / RF Systems Engineering Intern</span></div>
+        </div>
+      </div>
       <div class="spec-sheet">
-        <!-- EDIT: your headline numbers -->
-        <div class="spec"><div class="num">6+</div><div class="lbl">Projects Built</div></div>
-        <div class="spec"><div class="num">3</div><div class="lbl">Competition Seasons</div></div>
-        <div class="spec"><div class="num">4</div><div class="lbl">Years Building</div></div>
-        <div class="spec"><div class="num">∞</div><div class="lbl">Iterations</div></div>
+        <!-- these numbers update automatically from the arrays in script.js -->
+        <div class="spec"><div class="num" id="stat-projects">0</div><div class="lbl">Projects Documented</div></div>
+        <div class="spec"><div class="num" id="stat-awards">0</div><div class="lbl">Awards &amp; Honours</div></div>
+        <div class="spec"><div class="num" id="stat-skills">0</div><div class="lbl">Tools &amp; Skills</div></div>
       </div>
     </div>
   </div>
@@ -107,6 +117,14 @@
   <div id="project-list"><!-- rendered from PROJECTS array --></div>
 </section>
 
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="kicker reveal">03 — Experience</div>
+  <h2 class="section-title reveal d1">Where I Work</h2>
+  <div class="rule"></div>
+  <div id="experience-list"><!-- rendered from EXPERIENCE array --></div>
+</section>
+
 <!-- ============ MARQUEE DIVIDER ============ -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-inner" id="marquee-inner"></div>
@@ -114,15 +132,23 @@
 
 <!-- ================= SKILLS ================= -->
 <section id="skills">
-  <div class="kicker reveal">03 — Toolkit</div>
+  <div class="kicker reveal">04 — Toolkit</div>
   <h2 class="section-title reveal d1">Skills &amp; Tools</h2>
   <div class="rule"></div>
   <div class="skills-grid" id="skills-grid"><!-- rendered from SKILLS array --></div>
 </section>
 
+<!-- ================= GALLERY ================= -->
+<div class="gallery-wrap" id="gallery">
+  <div class="gallery-sticky">
+    <div class="kicker gallery-kicker">05 — Gallery</div>
+    <div class="gallery-scene" id="gallery-scene"><!-- rendered from GALLERY array --></div>
+  </div>
+</div>
+
 <!-- ================= CONTACT ================= -->
 <section id="contact" class="contact">
-  <div class="kicker reveal">04 — Contact</div>
+  <div class="kicker reveal">06 — Contact</div>
   <h2 class="reveal d1">Let's build something<br><em>worth building.</em></h2>
   <a class="contact-mail reveal d2" href="mailto:goffxavier08@gmail.com">goffxavier08@gmail.com</a>
   <div class="socials reveal d3">
@@ -135,7 +161,7 @@
 
 <footer>
   <span>© 2026 XAVIER GOFF</span>
-  <span>DESIGNED · BUILT · FROM SCRATCH</span>
+  <span>DESIGNED BY XAVIER · CODED WITH <a class="credit" href="https://claude.ai" target="_blank" rel="noopener">CLAUDE</a></span>
 </footer>
 
 <script src="script.js"></script>

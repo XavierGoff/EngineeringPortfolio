@@ -55,6 +55,37 @@ const SKILLS = [
   { cat: "Elec", name: "Soldering / PCB" }
 ];
 
+/* ============================================================
+   EXPERIENCE — same idea as projects: copy a block, edit, push.
+   ============================================================ */
+const EXPERIENCE = [
+  {
+    role: "CS / CT Coordinator · Robotics Mentor",
+    org: "St Paul's Girls' School",
+    period: "2025 — Present",
+    description: "EDIT: one or two sentences on what you actually do — the team, the tech, the responsibility."
+  },
+  {
+    role: "Embedded Systems / RF Systems Engineering Intern",
+    org: "Stag On Defense",
+    period: "2025 — Present",
+    description: "EDIT: what you build or work on here."
+  }
+];
+
+/* ============================================================
+   GALLERY — set src to a real file (e.g. "photos/gallery-1.jpg")
+   and the placeholder becomes your photo. Add/remove freely.
+   ============================================================ */
+const GALLERY = [
+  { src: null, caption: "GALLERY 01" },
+  { src: null, caption: "GALLERY 02" },
+  { src: null, caption: "GALLERY 03" },
+  { src: null, caption: "GALLERY 04" },
+  { src: null, caption: "GALLERY 05" },
+  { src: null, caption: "GALLERY 06" }
+];
+
 /* Marquee text — EDIT freely */
 const MARQUEE_TEXT = "DESIGN · BUILD · TEST · ITERATE · ";
 
@@ -89,6 +120,22 @@ document.getElementById('skills-grid').innerHTML = SKILLS.map(s =>
   `<div class="skill reveal"><div class="s-cat">${s.cat}</div><div class="s-name">${s.name}</div></div>`
 ).join('');
 document.getElementById('marquee-inner').textContent = (MARQUEE_TEXT.repeat(4) + MARQUEE_TEXT.repeat(4));
+
+/* ---------- render experience ---------- */
+document.getElementById('experience-list').innerHTML = EXPERIENCE.map(x => `
+  <div class="exp reveal">
+    <div class="exp-period">${x.period}</div>
+    <div>
+      <h3>${x.role}</h3>
+      <div class="exp-org">${x.org}</div>
+      <p>${x.description}</p>
+    </div>
+  </div>`).join('');
+
+/* ---------- about stats: computed from the arrays above ---------- */
+document.getElementById('stat-projects').textContent = PROJECTS.length;
+document.getElementById('stat-awards').textContent = PROJECTS.reduce((n, p) => n + p.awards.length, 0);
+document.getElementById('stat-skills').textContent = SKILLS.length;
 
 /* ---------- hero name letter animation ---------- */
 const h1 = document.getElementById('hero-name');
@@ -147,7 +194,6 @@ addEventListener('scroll', () => {
 const sketchWrap = document.getElementById('sketch-wrap');
 const sketchSvg = document.querySelector('.sketch-svg');
 const sketchClip = document.getElementById('sketch-clip');
-const sketchCaption = document.getElementById('sketch-caption');
 const heroEl = document.querySelector('.hero');
 const clamp01 = v => Math.min(1, Math.max(0, v));
 
@@ -176,7 +222,6 @@ function renderReveal(r, drift) {
     el.setAttribute('width', w.toFixed(2));
   });
   sketchSvg.style.transform = `translateY(${drift.toFixed(1)}px) scale(${(0.94 + r * 0.08).toFixed(4)})`;
-  sketchCaption.textContent = 'NO. 00 — THE MARK · ' + Math.round(r * 100) + '%';
 }
 renderReveal(0, 30);
 
@@ -238,3 +283,39 @@ new IntersectionObserver((entries, obs) => {
     }
   });
 }, { threshold: 0.55 }).observe(sketchWrap);
+
+
+/* ---------- gallery: fly forward through the photos as you scroll ---------- */
+const galleryWrap = document.getElementById('gallery');
+const galleryScene = document.getElementById('gallery-scene');
+const CARD_GAP = 650;                       /* depth between photos, px */
+const gCards = GALLERY.map((g, i) => {
+  const el = document.createElement('div');
+  el.className = 'g-card';
+  el.dataset.x = ((i % 2 === 0 ? -1 : 1) * (110 + (i * 37) % 90));   /* lateral offset */
+  el.dataset.y = (((i * 53) % 90) - 45);                             /* vertical offset */
+  el.innerHTML = g.src
+    ? `<img src="${g.src}" alt="${g.caption}"><span class="g-caption">${g.caption}</span>`
+    : `${g.caption}<span class="g-caption">set src in script.js — photos/gallery-${i + 1}.jpg</span>`;
+  galleryScene.appendChild(el);
+  return el;
+});
+let gSmooth = 0;
+function galleryLoop() {
+  const total = galleryWrap.offsetHeight - innerHeight;
+  const target = clamp01(-galleryWrap.getBoundingClientRect().top / total);
+  gSmooth += (target - gSmooth) * 0.12;
+  const cam = gSmooth * (GALLERY.length - 0.4) * CARD_GAP;   /* camera moves forward */
+  gCards.forEach((el, i) => {
+    const z = -i * CARD_GAP + cam;
+    /* fade out as a photo passes the camera, fade in from the distance */
+    const op = z > 60 ? Math.max(0, 1 - (z - 60) / 260)
+                      : Math.min(1, (z + 2400) / 800);
+    el.style.transform =
+      `translate(-50%, -50%) translate3d(${el.dataset.x}px, ${el.dataset.y}px, ${z.toFixed(1)}px)`;
+    el.style.opacity = op.toFixed(3);
+    el.style.visibility = op <= 0.01 ? 'hidden' : 'visible';
+  });
+  requestAnimationFrame(galleryLoop);
+}
+requestAnimationFrame(galleryLoop);
