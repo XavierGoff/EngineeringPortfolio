@@ -7,12 +7,17 @@
 const PROJECTS = [
   {
     category: "Robotics",
-    title: "Competition Robot — Season 1",
-    subtitle: "FTC/FRC — [ game name ] · placeholder",
-    years: "2023–2024",
-    description: "Describe the robot: your role, the mechanism you designed, what made it clever, and what you'd do differently. Two to four sentences is the sweet spot — enough to show depth, short enough that people read it.",
-    awards: ["Regional Award — placeholder", "Design Award — placeholder"],
-    image: null
+    title: "Blackout Robotics — Season 1",
+    subtitle: "FTC — Power Play",
+    years: "2022–23",
+    description: "EDIT: describe the robot — your role, the mechanism you designed, what made it clever, and what you'd do differently. Two to four sentences.",
+    awards: [
+      "South East Regional — Winning Alliance Captain",
+      "South East Regional — Inspire Award",
+      "UK National Champions"
+    ],
+    image: "photos/blackout-s1-front.png",
+    imageHover: "photos/blackout-s1-iso.png"
   },
   {
     category: "Robotics",
@@ -92,7 +97,7 @@ const MARQUEE_TEXT = "DESIGN · BUILD · TEST · ITERATE · ";
 /* ---------- render projects ---------- */
 const list = document.getElementById('project-list');
 PROJECTS.forEach((p, i) => {
-  const fig = 'NO. ' + String(i + 2).padStart(2, '0');
+  const fig = 'NO. ' + String(i + 1).padStart(2, '0');
   const el = document.createElement('article');
   el.className = 'proj watch';
   el.setAttribute('data-fig', fig);
@@ -110,6 +115,7 @@ PROJECTS.forEach((p, i) => {
       </div>
       <div class="proj-img reveal d2">
         ${p.image ? `<img src="${p.image}" alt="${p.title}">` : `${fig} — IMAGE PENDING`}
+        ${p.image && p.imageHover ? `<img class="hover-img" src="${p.imageHover}" alt="${p.title} — alternate view">` : ''}
       </div>
     </div>`;
   list.appendChild(el);
