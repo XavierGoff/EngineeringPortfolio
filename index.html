@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xavier Goff — Engineering Portfolio</title>
+<meta name="description" content="Engineering portfolio of Xavier Goff — robotics, personal builds, and course projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="progress"></div>
+<div class="grid-bg"></div>
+
+<nav>
+  <a href="#top" aria-label="Home">
+    <svg class="nav-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M26 23 L54 45 L75 77 L47 54 Z"/>
+      <path d="M76 24 L58 42 L66 50 Z"/>
+      <path d="M24 76 L42 58 L34 50 Z"/>
+    </svg>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="kicker">Engineering Portfolio</div>
+  <h1 id="hero-name">XAVIER GOFF</h1>
+  <div class="name-underline"></div>
+  <!-- EDIT: your disciplines / tagline -->
+  <div class="hero-sub">Designer <b>·</b> Builder <b>·</b> Problem Solver</div>
+  <a class="hero-cta" href="#projects">See the Work ↓</a>
+  <div class="scroll-hint">SCROLL</div>
+</header>
+
+<!-- ============ PENCIL-SKETCH LOGO DIVIDER ============ -->
+<div class="sketch-wrap" id="sketch-wrap">
+  <div class="sketch-sticky">
+    <svg class="sketch-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- wobbly hand-drawn edge -->
+        <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="7" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/>
+        </filter>
+        <!-- pencil hatching -->
+        <pattern id="hatch" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="5" stroke="#43444a" stroke-width="1.1" opacity=".6"/>
+        </pattern>
+        <!-- reveal mask: diagonal colouring strokes, populated by script -->
+        <clipPath id="sketch-clip"></clipPath>
+      </defs>
+      <g clip-path="url(#sketch-clip)" filter="url(#rough)">
+        <path class="sketch-fill" fill="url(#hatch)" d="M26 23 L54 45 L75 77 L47 54 Z"/>
+        <path class="sketch-fill" fill="url(#hatch)" d="M76 24 L58 42 L66 50 Z"/>
+        <path class="sketch-fill" fill="url(#hatch)" d="M24 76 L42 58 L34 50 Z"/>
+        <path class="sketch-path" d="M26 23 L54 45 L75 77 L47 54 Z"/>
+        <path class="sketch-path" d="M76 24 L58 42 L66 50 Z"/>
+        <path class="sketch-path" d="M24 76 L42 58 L34 50 Z"/>
+      </g>
+    </svg>
+    <div class="logo-caption" id="sketch-caption">NO. 00 — THE MARK · 0%</div>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="kicker reveal">01 — Profile</div>
+  <h2 class="section-title reveal d1">About Me</h2>
+  <div class="rule"></div>
+  <div class="about-grid">
+    <div class="photo-frame reveal d1">
+      <div class="ph-label">NO. 01 — PORTRAIT<br>[ PHOTO PENDING ]</div>
+    </div>
+    <div class="about-text reveal d2">
+      <!-- EDIT: replace with your own bio -->
+      <p>Hi, I'm <b>Xavier Goff</b> — an engineering student who learns by building. From robotics
+      competitions to independent projects, I like taking ideas from a sketch on grid paper to
+      hardware that actually works.</p>
+      <p>This page is a running log of what I've designed, built, broken, and rebuilt. Every project
+      below taught me something a classroom couldn't.</p>
+      <p><b>Currently:</b> [ your school / program / what you're working on right now ]</p>
+      <div class="spec-sheet">
+        <!-- EDIT: your headline numbers -->
+        <div class="spec"><div class="num">6+</div><div class="lbl">Projects Built</div></div>
+        <div class="spec"><div class="num">3</div><div class="lbl">Competition Seasons</div></div>
+        <div class="spec"><div class="num">4</div><div class="lbl">Years Building</div></div>
+        <div class="spec"><div class="num">∞</div><div class="lbl">Iterations</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="kicker reveal">02 — Selected Work</div>
+  <h2 class="section-title reveal d1">Projects</h2>
+  <div class="rule"></div>
+  <div id="project-list"><!-- rendered from PROJECTS array --></div>
+</section>
+
+<!-- ============ MARQUEE DIVIDER ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-inner" id="marquee-inner"></div>
+</div>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="kicker reveal">03 — Toolkit</div>
+  <h2 class="section-title reveal d1">Skills &amp; Tools</h2>
+  <div class="rule"></div>
+  <div class="skills-grid" id="skills-grid"><!-- rendered from SKILLS array --></div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="contact">
+  <div class="kicker reveal">04 — Contact</div>
+  <h2 class="reveal d1">Let's build something<br><em>worth building.</em></h2>
+  <a class="contact-mail reveal d2" href="mailto:goffxavier08@gmail.com">goffxavier08@gmail.com</a>
+  <div class="socials reveal d3">
+    <!-- EDIT: your links -->
+    <a href="#" target="_blank">GITHUB</a>
+    <a href="#" target="_blank">LINKEDIN</a>
+    <a href="#" target="_blank">RESUME</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 XAVIER GOFF</span>
+  <span>DESIGNED · BUILT · FROM SCRATCH</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
