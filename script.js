@@ -79,16 +79,32 @@ const SKILLS = [
    ============================================================ */
 const EXPERIENCE = [
   {
-    role: "CS / CT Coordinator · Robotics Mentor",
-    org: "St Paul's Girls' School",
-    period: "2025 — Present",
-    description: "EDIT: one or two sentences on what you actually do — the team, the tech, the responsibility."
+    role: "RF Systems & Embedded Software Intern",
+    org: "StagOn Defence",
+    period: "Apr 2026 — Present",
+    logo: "photos/logos/stagon.png",
+    description: "Working on sensor fusion through radio-frequency detection and classification."
   },
   {
-    role: "Embedded Systems / RF Systems Engineering Intern",
-    org: "Stag On Defense",
-    period: "2025 — Present",
-    description: "EDIT: what you build or work on here."
+    role: "CS / CT Consultant",
+    org: "St Paul's Girls' School",
+    period: "Sep 2025 — Present",
+    logo: "photos/logos/spgs.png",
+    description: "Robotics, computer science and computer technology consultant, mentoring the St Paul's FTC team."
+  },
+  {
+    role: "Business Research Development Intern",
+    org: "Imperial College London",
+    period: "Jul 2024",
+    logo: "photos/logos/imperial.png",
+    description: "Placement involving data analysis, research in the financial sector and coding in R."
+  },
+  {
+    role: "FIRST Tech Challenge UK Website Developer",
+    org: "FIRST",
+    period: "Jul 2023",
+    logo: "photos/logos/first.png",
+    description: "Worked on a team of 8 developing an online platform improving possibilities for UK robotics teams by lowering costs and increasing parts availability."
   }
 ];
 
@@ -97,12 +113,12 @@ const EXPERIENCE = [
    and the placeholder becomes your photo. Add/remove freely.
    ============================================================ */
 const GALLERY = [
-  { src: null, caption: "GALLERY 01" },
-  { src: null, caption: "GALLERY 02" },
-  { src: null, caption: "GALLERY 03" },
-  { src: null, caption: "GALLERY 04" },
-  { src: null, caption: "GALLERY 05" },
-  { src: null, caption: "GALLERY 06" }
+  { src: "photos/gallery-1.jpg", title: "EDIT — one-line caption for this photo" },
+  { src: "photos/gallery-2.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery-3.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery-4.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery-5.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery-6.jpg", title: "EDIT — one-line caption" }
 ];
 
 /* Marquee text — EDIT freely */
@@ -140,8 +156,10 @@ PROJECTS.forEach((p, i) => {
 });
 
 /* ---------- render skills + marquee ---------- */
+const CAT_ORDER = ['CAD', 'Code', 'Elec', 'Fab', 'Tools', 'Team'];
+SKILLS.sort((a, b) => CAT_ORDER.indexOf(a.cat) - CAT_ORDER.indexOf(b.cat));
 document.getElementById('skills-grid').innerHTML = SKILLS.map(s =>
-  `<div class="skill reveal"><div class="s-cat">${s.cat}</div><div class="s-name">${s.name}</div></div>`
+  `<div class="skill reveal" data-cat="${s.cat}"><div class="s-cat">${s.cat}</div><div class="s-name">${s.name}</div></div>`
 ).join('');
 document.getElementById('marquee-inner').textContent = (MARQUEE_TEXT.repeat(4) + MARQUEE_TEXT.repeat(4));
 
@@ -149,10 +167,13 @@ document.getElementById('marquee-inner').textContent = (MARQUEE_TEXT.repeat(4) +
 document.getElementById('experience-list').innerHTML = EXPERIENCE.map(x => `
   <div class="exp reveal">
     <div class="exp-period">${x.period}</div>
-    <div>
-      <h3>${x.role}</h3>
-      <div class="exp-org">${x.org}</div>
-      <p>${x.description}</p>
+    <div class="exp-main">
+      ${x.logo ? `<img class="exp-logo" src="${x.logo}" alt="${x.org}" onerror="this.style.display='none'">` : ''}
+      <div>
+        <h3>${x.role}</h3>
+        <div class="exp-org">${x.org}</div>
+        <p>${x.description}</p>
+      </div>
     </div>
   </div>`).join('');
 
@@ -312,15 +333,16 @@ new IntersectionObserver((entries, obs) => {
 /* ---------- gallery: fly forward through the photos as you scroll ---------- */
 const galleryWrap = document.getElementById('gallery');
 const galleryScene = document.getElementById('gallery-scene');
-const CARD_GAP = 650;                       /* depth between photos, px */
+const CARD_GAP = 700;                       /* depth between photos, px */
 const gCards = GALLERY.map((g, i) => {
   const el = document.createElement('div');
   el.className = 'g-card';
   el.dataset.x = ((i % 2 === 0 ? -1 : 1) * (110 + (i * 37) % 90));   /* lateral offset */
   el.dataset.y = (((i * 53) % 90) - 45);                             /* vertical offset */
-  el.innerHTML = g.src
-    ? `<img src="${g.src}" alt="${g.caption}"><span class="g-caption">${g.caption}</span>`
-    : `${g.caption}<span class="g-caption">set src in script.js — photos/gallery-${i + 1}.jpg</span>`;
+  /* if the photo file doesn't exist yet, the frame shows a placeholder */
+  el.innerHTML = `<img class="g-photo" src="${g.src}" alt="${g.title}"
+      onerror="this.outerHTML='<div class=&quot;g-empty&quot;>ADD photos/gallery-${i + 1}.jpg</div>'">
+    <span class="g-caption">${g.title}</span>`;
   galleryScene.appendChild(el);
   return el;
 });
