@@ -394,7 +394,7 @@ function lockScroll(on) {
   fn('keydown', keyPrevent, false);
 }
 
-const SKETCH_DURATION = 1500;
+const SKETCH_DURATION = 1000;
 const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 let sketchPlayed = false;
 let sketchSkip = false;
@@ -469,3 +469,15 @@ function galleryLoop() {
   requestAnimationFrame(galleryLoop);
 }
 requestAnimationFrame(galleryLoop);
+
+
+/* ---------- email: assembled at runtime so bots scraping the HTML/JS
+   source never see the full address ---------- */
+(function () {
+  const m = document.getElementById('contact-mail');
+  const u = '80reivaxffog'.split('').reverse().join('');   /* user, reversed */
+  const d = ['liamg', 'moc'].map(x => x.split('').reverse().join('')).join('.');
+  const addr = u + String.fromCharCode(64) + d;
+  m.href = 'mailto:' + addr;
+  m.textContent = addr;
+})();
