@@ -119,7 +119,7 @@ const SKILLS = [
   { cat: "Code", name: "Java" },
   { cat: "Fab",  name: "Laser Cutting" },
   { cat: "Tools", name: "Excel" },
-  { cat: "Team", name: "Teaching / Mentoring" }
+  { cat: "Team", name: "Mentoring" }
 ];
 
 /* ============================================================
@@ -136,13 +136,23 @@ const EXPERIENCE = [
   {
     role: "CS / CT Consultant",
     org: "St Paul's Girls' School",
+    url: "https://spgs.org/",
     period: "Sep 2025 — Present",
     logo: "photos/logos/spgs.png",
     description: "Robotics, computer science and computer technology consultant, mentoring the St Paul's FTC team."
   },
   {
+    role: "Education Mentor",
+    org: "American School in London",
+    url: "https://www.asl.org/",
+    period: "Jun 2025 — Aug 2025",
+    logo: "photos/logos/asl.png",
+    description: "Educated and mentored children aged 6–12 in robotics, Scratch coding and animation — running hands-on sessions and summer camp programmes at ASL."
+  },
+  {
     role: "Business Research Development Intern",
     org: "Imperial College London",
+    url: "https://www.imperial.ac.uk/",
     period: "Jul 2024",
     logo: "photos/logos/imperial.png",
     description: "Placement involving data analysis, research in the financial sector and coding in R."
@@ -150,6 +160,7 @@ const EXPERIENCE = [
   {
     role: "FIRST Tech Challenge UK Website Developer",
     org: "FIRST",
+    url: "https://firstuk.org/",
     period: "Jul 2023",
     logo: "photos/logos/first.png",
     description: "Worked on a team of 8 developing an online platform improving possibilities for UK robotics teams by lowering costs and increasing parts availability."
@@ -161,23 +172,23 @@ const EXPERIENCE = [
    and the placeholder becomes your photo. Add/remove freely.
    ============================================================ */
 const GALLERY = [
-  { src: "photos/gallery/1.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/2.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/3.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/4.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/5.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/6.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/7.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/8.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/9.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/13.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/14.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/15.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/16.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/17.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/18.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/19.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/20.jpg", title: "EDIT — one-line caption" }
+  { src: "photos/gallery/1.jpg", title: "Control Award Winners 2023" },
+  { src: "photos/gallery/2.jpg", title: "Inspire Award Winners 2023" },
+  { src: "photos/gallery/3.jpg", title: "Dean's List Award &amp; 1884 Advancement" },
+  { src: "photos/gallery/4.jpg", title: "2024 Finals — Match 1" },
+  { src: "photos/gallery/5.jpg", title: "2024 Finals — Match 2" },
+  { src: "photos/gallery/6.jpg", title: "2024 National Champions" },
+  { src: "photos/gallery/7.jpg", title: "2024 Finals — Match 3" },
+  { src: "photos/gallery/8.jpg", title: "2024 Qualifier Matches" },
+  { src: "photos/gallery/9.jpg", title: "FIRST Global Playoffs" },
+  { src: "photos/gallery/13.jpg", title: "Electronics Car Race" },
+  { src: "photos/gallery/14.jpg", title: "Great Exhibition Road Festival" },
+  { src: "photos/gallery/15.jpg", title: "Oxford Robohack 2026" },
+  { src: "photos/gallery/16.jpg", title: "SoleSense — Uplyft Hackathon 2026" },
+  { src: "photos/gallery/17.jpg", title: "SPGS — with the Deputy Mayor of London" },
+  { src: "photos/gallery/18.jpg", title: "CGCU Makeathon Win" },
+  { src: "photos/gallery/19.jpg", title: "CGCU Makeathon Field Testing" },
+  { src: "photos/gallery/20.jpg", title: "EPFL Robohack 2026" }
 ];
 
 /* Marquee text — EDIT freely */
@@ -259,10 +270,12 @@ document.getElementById('experience-list').innerHTML = EXPERIENCE.map(x => `
   <div class="exp reveal">
     <div class="exp-period">${x.period}</div>
     <div class="exp-main">
-      ${x.logo ? `<img class="exp-logo" src="${x.logo}" alt="${x.org}" onerror="this.style.display='none'">` : ''}
+      ${x.logo ? (x.url
+        ? `<a href="${x.url}" target="_blank" rel="noopener"><img class="exp-logo" src="${x.logo}" alt="${x.org}" onerror="this.parentElement.style.display='none'"></a>`
+        : `<img class="exp-logo" src="${x.logo}" alt="${x.org}" onerror="this.style.display='none'">`) : ''}
       <div>
         <h3>${x.role}</h3>
-        <div class="exp-org">${x.org}</div>
+        <div class="exp-org">${x.url ? `<a href="${x.url}" target="_blank" rel="noopener">${x.org} ↗</a>` : x.org}</div>
         <p>${x.description}</p>
       </div>
     </div>
