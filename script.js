@@ -51,9 +51,9 @@ const PROJECTS = [
   {
     category: "Personal",
     title: "CGCU Extreme Weather Makeathon",
-    subtitle: "CGCU — Imperial College London",
+    subtitle: "CGCU Makeathon — Imperial College London",
     years: "2025",
-    description: "EDIT: what the brief was, what your team built in the time limit, and what you personally made.",
+    description: "Led the robot's design and technical build, taking it from CAD to a working tracked prototype. I designed the mechanical layout, built the electronics, and handled the wiring and code under a tight deadline. The project ended up winning the competition.",
     awards: [
       "1st Place — CGCU Makeathon Winners",
       "Sponsored by PCBWay"
@@ -170,9 +170,6 @@ const GALLERY = [
   { src: "photos/gallery/7.jpg", title: "EDIT — one-line caption" },
   { src: "photos/gallery/8.jpg", title: "EDIT — one-line caption" },
   { src: "photos/gallery/9.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/10.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/11.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery/12.jpg", title: "EDIT — one-line caption" },
   { src: "photos/gallery/13.jpg", title: "EDIT — one-line caption" },
   { src: "photos/gallery/14.jpg", title: "EDIT — one-line caption" },
   { src: "photos/gallery/15.jpg", title: "EDIT — one-line caption" },
@@ -237,6 +234,24 @@ SKILLS.sort((a, b) => CAT_ORDER.indexOf(a.cat) - CAT_ORDER.indexOf(b.cat));
 document.getElementById('skills-grid').innerHTML = SKILLS.map(s =>
   `<div class="skill reveal" data-cat="${s.cat}"><div class="s-cat">${s.cat}</div><div class="s-name">${s.name}</div></div>`
 ).join('');
+
+/* ---------- 3D tilt: skill cards lift toward the cursor ---------- */
+document.querySelectorAll('.skill').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'box-shadow .25s';          /* transform follows raw, zero lag */
+  });
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;    /* -0.5 .. 0.5 */
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform =
+      `perspective(520px) rotateX(${(py * 22).toFixed(2)}deg) rotateY(${(-px * 22).toFixed(2)}deg) translateY(-3px) scale(1.04)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'box-shadow .25s, transform .45s cubic-bezier(.22,1,.36,1)';
+    card.style.transform = '';
+  });
+});
 document.getElementById('marquee-inner').textContent = (MARQUEE_TEXT.repeat(4) + MARQUEE_TEXT.repeat(4));
 
 /* ---------- render experience ---------- */
