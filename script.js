@@ -424,6 +424,7 @@ new IntersectionObserver((entries, obs) => {
     if (e.isIntersecting && !sketchPlayed) {
       sketchPlayed = true;
       obs.disconnect();
+      if (navJumping) { renderReveal(1, -15); return; }
       lockScroll(true);
       /* glide to centre first — no abrupt stop, even from a fast fling */
       sketchWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -481,3 +482,30 @@ requestAnimationFrame(galleryLoop);
   m.href = 'mailto:' + addr;
   m.textContent = addr;
 })();
+
+
+/* ---------- fast menu navigation ----------
+   Menu clicks take a fixed ~0.6s no matter how far apart the sections
+   are — no more riding through the whole gallery to reach Contact.
+   Manual scrolling is unaffected. */
+let navJumping = false;
+function smoothJump(el) {
+  navJumping = true;
+  const targetY = el.getBoundingClientRect().top + scrollY - 70;
+  scrollTo({ top: targetY, behavior: 'instant' });   /* teleport — never rides through sections */
+  /* replay the section's entrance (orange rule sweep, titles rising) on every visit */
+  el.classList.add('no-anim');                       /* kill transitions... */
+  el.classList.remove('visible');                    /* ...snap to hidden instantly */
+  void el.offsetWidth;
+  el.classList.remove('no-anim');                    /* transitions back on */
+  void el.offsetWidth;
+  requestAnimationFrame(() => el.classList.add('visible'));   /* animate in */
+  setTimeout(() => { navJumping = false; }, 100);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = id && document.getElementById(id);
+    if (el) { e.preventDefault(); smoothJump(el); }
+  });
+});

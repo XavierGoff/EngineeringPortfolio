@@ -409,3 +409,6 @@ footer{
 /* ---------- experience org links ---------- */
 .exp-org a{color:var(--accent);text-decoration:none}
 .exp-org a:hover{text-decoration:underline}
+
+/* instantly snap reveals to hidden (used when replaying section entrances) */
+.no-anim .reveal, .no-anim .rule{transition:none !important}
