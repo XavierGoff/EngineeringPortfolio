@@ -46,12 +46,17 @@ const PROJECTS = [
   },
   {
     category: "Course",
-    title: "Course Project #1",
-    subtitle: "[ class name / institution ]",
+    title: "Lecture Pulse",
+    subtitle: "Human Centred Design — Imperial College London",
     years: "2025–2026",
-    description: "Course project placeholder: what the brief was, what your team built, and specifically what YOU contributed. Name the deliverable — report, prototype, working demo.",
-    awards: ["Grade / recognition — optional"],
-    image: null
+    description: "EDIT: what the brief was, what your team built, and specifically what YOU contributed. Name the deliverable — report, prototype, working demo.",
+    awards: [
+      "Grade: A",
+      "Selected to Present — Great Exhibition Road Festival"
+    ],
+    image: "photos/lecturepulse-closed.png",
+    imageHover: "photos/lecturepulse-open.png",
+    hoverStyle: "expand"
   }
 ];
 
@@ -113,12 +118,26 @@ const EXPERIENCE = [
    and the placeholder becomes your photo. Add/remove freely.
    ============================================================ */
 const GALLERY = [
-  { src: "photos/gallery-1.jpg", title: "EDIT — one-line caption for this photo" },
-  { src: "photos/gallery-2.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery-3.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery-4.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery-5.jpg", title: "EDIT — one-line caption" },
-  { src: "photos/gallery-6.jpg", title: "EDIT — one-line caption" }
+  { src: "photos/gallery/1.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/2.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/3.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/4.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/5.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/6.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/7.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/8.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/9.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/10.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/11.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/12.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/13.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/14.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/15.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/16.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/17.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/18.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/19.jpg", title: "EDIT — one-line caption" },
+  { src: "photos/gallery/20.jpg", title: "EDIT — one-line caption" }
 ];
 
 /* Marquee text — EDIT freely */
@@ -147,7 +166,7 @@ PROJECTS.forEach((p, i) => {
           return `<span class="${cls}">${label}</span>`;
         }).join('')}</div>` : ''}
       </div>
-      <div class="proj-img reveal d2 ${p.image ? 'has-img' : ''}">
+      <div class="proj-img reveal d2 ${p.image ? 'has-img' : ''}${p.hoverStyle === 'expand' ? ' expand' : ''}">
         ${p.image ? `<img class="base-img" src="${p.image}" alt="${p.title}">` : `${fig} — IMAGE PENDING`}
         ${p.image && p.imageHover ? `<img class="hover-img" src="${p.imageHover}" alt="${p.title} — alternate view">` : ''}
       </div>
@@ -341,7 +360,7 @@ const gCards = GALLERY.map((g, i) => {
   el.dataset.y = (((i * 53) % 90) - 45);                             /* vertical offset */
   /* if the photo file doesn't exist yet, the frame shows a placeholder */
   el.innerHTML = `<img class="g-photo" src="${g.src}" alt="${g.title}"
-      onerror="this.outerHTML='<div class=&quot;g-empty&quot;>ADD photos/gallery-${i + 1}.jpg</div>'">
+      onerror="this.outerHTML='<div class=&quot;g-empty&quot;>ADD photos/gallery/${i + 1}.jpg</div>'">
     <span class="g-caption">${g.title}</span>`;
   galleryScene.appendChild(el);
   return el;
