@@ -16,6 +16,11 @@ const PROJECTS = [
       "South East Regional — Inspire Award",
       "UK National Champions"
     ],
+    slug: "blackout-power-play",
+    contributors: [
+      { name: "Ryan Ganguli", url: "https://www.linkedin.com/in/ryan-ganguli-087910319/" },
+      { name: "Harshiv Puri", url: "https://www.linkedin.com/in/harshiv-puri-4500202b2/" }
+    ],
     image: "photos/blackout-s1-front.png",
     imageHover: "photos/blackout-s1-iso.png"
   },
@@ -24,7 +29,7 @@ const PROJECTS = [
     title: "Blackout Robotics — Centerstage",
     subtitle: "FTC — 19280 · UK235",
     years: "2023–24",
-    description: "EDIT: season two — what you carried over, what you reinvented. Call out a specific improvement with a number if you can.",
+    description: "Lead Designer and team coach, supporting the wider CAD and build process while helping younger members develop their design skills. I contributed to the intake and drivetrain mechanisms, focusing on practical, reliable solutions that could be manufactured, assembled and iterated quickly during the season.",
     awards: [
       { label: "FRC Dean's List Award — 1884", highlight: true },
       "South East Regional — Winning Alliance Captain",
@@ -32,31 +37,69 @@ const PROJECTS = [
       "UK National Champions",
       "UK Control Award"
     ],
+    slug: "blackout-centerstage",
+    contributors: [
+      { name: "Ryan Ganguli", url: "https://www.linkedin.com/in/ryan-ganguli-087910319/" },
+      { name: "Harshiv Puri", url: "https://www.linkedin.com/in/harshiv-puri-4500202b2/" },
+      { name: "Otto Skibeli", url: "https://www.linkedin.com/in/otto-skibeli-881054358/" },
+      { name: "Sebastian Seminara", url: null },
+      { name: "Sam Sarkar", url: null }
+    ],
     image: "photos/blackout-s2-front.png",
     imageHover: "photos/blackout-s2-iso.png"
   },
   {
     category: "Personal",
-    title: "Independent Build #1",
-    subtitle: "[ e.g. custom electronics / CAD / mechanical build ]",
+    title: "CGCU Extreme Weather Makeathon",
+    subtitle: "CGCU — Imperial College London",
     years: "2025",
-    description: "Personal projects show initiative better than anything else. Explain the itch you were scratching, the hardest technical problem, and the tools you used to solve it.",
-    awards: [],
-    image: null
+    description: "EDIT: what the brief was, what your team built in the time limit, and what you personally made.",
+    awards: [
+      "1st Place — CGCU Makeathon Winners",
+      "Sponsored by PCBWay"
+    ],
+    slug: "cgcu-makeathon",
+    contributors: [
+      { name: "Christian Gorchev", url: "https://www.linkedin.com/in/christian-gorchev-41a697380/" },
+      { name: "Dimitrios Tsipolitis", url: null }
+    ],
+    image: "photos/makeathon-front.png",
+    imageHover: "photos/makeathon-iso.png"
   },
   {
     category: "Course",
     title: "Lecture Pulse",
     subtitle: "Human Centred Design — Imperial College London",
     years: "2025–2026",
-    description: "EDIT: what the brief was, what your team built, and specifically what YOU contributed. Name the deliverable — report, prototype, working demo.",
+    description: "Built the physical ESP32 feedback pad and its core electronics, including illuminated buttons, LiPo power and the phone-slot switch. The system turned live class input into a focus score and question alert for lecturers.",
     awards: [
       "Grade: A",
       "Selected to Present — Great Exhibition Road Festival"
     ],
+    slug: "lecture-pulse",
+    contributors: [
+      { name: "Roma Krishna Moorthy", url: "https://www.linkedin.com/in/romasyrry-shunmugam-b38804389/" },
+      { name: "Yusra Ali", url: "https://www.linkedin.com/in/yusra-ali-565b092b0/" }
+    ],
     image: "photos/lecturepulse-closed.png",
     imageHover: "photos/lecturepulse-open.png",
     hoverStyle: "expand"
+  },
+  {
+    category: "Course",
+    title: "Electronics Car Race",
+    subtitle: "Electronics — Imperial College London",
+    years: "2025–2026",
+    description: "Designer for the car's base and chassis layout in CAD, packaging the motors, battery, wiring and bodywork within the size constraints. I also helped shape the overall system concept and supported the electronics build through soldering, wiring and planning the power/control architecture.",
+    awards: ["Grade: A", "2nd Place — Year Group Race"],
+    slug: "electronics-car-race",
+    contributors: [
+      { name: "Sebastian Khan Hummel", url: "https://www.linkedin.com/in/sebastian-khan-hummel-376712317/" },
+      { name: "Tomas Markey", url: "https://www.linkedin.com/in/tomas-markey-083358249/" },
+      { name: "Musa Ali Sajjad", url: null }
+    ],
+    image: "photos/car-race-front.png",
+    imageHover: "photos/car-race-iso.png"
   }
 ];
 
@@ -150,12 +193,20 @@ PROJECTS.forEach((p, i) => {
   const el = document.createElement('article');
   el.className = 'proj watch';
   el.setAttribute('data-fig', fig);
+  if (p.slug) {
+    el.classList.add('clickable');
+    el.addEventListener('click', () => { location.href = `projects/${p.slug}.html`; });
+  }
   el.innerHTML = `
+    ${p.slug ? '<span class="open-hint">OPEN \u2192</span>' : ''}
     <div class="proj-head reveal">
       <h3>${p.title}</h3>
       <span class="proj-cat">${p.category}</span>
       <span class="proj-years">${p.years}</span>
     </div>
+    ${p.contributors && p.contributors.length ? `<div class="contribs reveal d1">WITH ${p.contributors.map(c =>
+      c.url ? `<a href="${c.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${c.name}</a>`
+            : `<span>${c.name}</span>`).join(' · ')}</div>` : ''}
     <div class="proj-sub reveal d1">${p.subtitle}</div>
     <div class="proj-body">
       <div class="reveal d1">
@@ -173,6 +224,12 @@ PROJECTS.forEach((p, i) => {
     </div>`;
   list.appendChild(el);
 });
+
+/* ---------- nav dropdown: one link per project page ---------- */
+document.getElementById('proj-menu').innerHTML = PROJECTS
+  .filter(p => p.slug)
+  .map(p => `<a href="projects/${p.slug}.html">${p.title}</a>`)
+  .join('');
 
 /* ---------- render skills + marquee ---------- */
 const CAT_ORDER = ['CAD', 'Code', 'Elec', 'Fab', 'Tools', 'Team'];
