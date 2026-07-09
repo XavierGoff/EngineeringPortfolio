@@ -4,13 +4,153 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lecture Pulse — Xavier Goff</title>
+<meta name="description" content="Lecture Pulse — a real-time ESP32 lecture feedback system. Human Centred Design, Imperial College London.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
+<style>
+/* ---------- page-local styles ---------- */
+.case section{padding:80px 8vw}
+.case section.case-hero{padding-top:170px}
+.case p{color:var(--ink-dim);margin-bottom:16px}
+.case p b{color:var(--ink);font-weight:500}
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 8px}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+.split.wide-r{grid-template-columns:1fr 1.15fr}
+.split.wide-l{grid-template-columns:1.15fr 1fr}
+@media(max-width:900px){.split,.split.wide-r,.split.wide-l{grid-template-columns:1fr}}
+
+figure{border:1px solid var(--line);background:#fff;padding:10px 10px 0;margin:0}
+figure img,figure video{width:100%;display:block}
+figcaption{
+  padding:11px 4px;text-align:center;font-family:var(--font-mono);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);
+}
+figure.plain{border:none;background:none;padding:0}
+figure.plain img{object-fit:contain}
+
+.spec-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.spec-item{background:var(--bg-2);padding:16px 18px}
+.spec-item .t{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.spec-item .d{font-size:.92rem;color:var(--ink-dim)}
+
+/* architecture diagram strip */
+.arch{
+  margin-top:34px;border:1px solid var(--line);background:var(--bg-2);padding:26px 20px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink-dim);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;text-align:center;
+}
+.arch .node{border:1.5px solid var(--ink);padding:10px 16px;color:var(--ink);background:#fff}
+.arch .link{color:var(--accent);white-space:nowrap}
+
+/* ---------- report carousels ---------- */
+.carousel{border:1px solid var(--line);background:#fff;padding:12px}
+.carousel .frame{position:relative;overflow:hidden}
+.carousel img{width:100%;display:block;transition:opacity .3s ease}
+.carousel .c-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border:1px solid var(--line-bright);background:rgba(250,249,246,.92);
+  color:var(--ink);font-size:20px;line-height:1;cursor:pointer;z-index:5;
+  transition:all .25s;font-family:var(--font-head);
+}
+.carousel .c-btn:hover{border-color:var(--accent);color:var(--accent);background:#fff}
+.carousel .c-prev{left:10px}
+.carousel .c-next{right:10px}
+.carousel .c-bar{
+  display:flex;justify-content:space-between;align-items:center;padding:12px 4px 2px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);
+}
+.carousel .c-count{color:var(--accent)}
+.carousel-row{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:40px}
+@media(max-width:980px){.carousel-row{grid-template-columns:1fr}}
+
+.repo-link{
+  display:inline-block;margin-top:20px;font-family:var(--font-mono);font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;
+  border:1.5px solid var(--ink);padding:13px 26px;transition:all .3s;
+}
+.repo-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+.back-row{padding:0 8vw 90px;max-width:1200px;margin:0 auto}
+
+/* ---------- technical breakdown blocks ---------- */
+.tech-h{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--accent);margin:54px 0 14px;
+}
+.codebox{
+  background:#17181a;color:#d8e6d8;border:1px solid #2a2c30;
+  font-family:var(--font-mono);font-size:12.5px;line-height:1.7;
+  padding:20px 22px;overflow-x:auto;white-space:pre;
+}
+.codebox .c{color:#7d8590}
+.codebox .k{color:#e8a04a}
+
+/* ---------- horizontal build timeline (scroll-driven) ---------- */
+.tl-wrap{height:340vh;position:relative}
+.tl-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding-top:90px;box-sizing:border-box}
+.tl-head{padding:0 8vw;max-width:1200px}
+.tl-viewport{overflow:hidden;margin-top:14px;position:relative}
+.tl-viewport::before{
+  content:'';position:absolute;top:24px;left:0;width:100%;height:2px;background:var(--line-bright);
+}
+.tl-track{display:flex;gap:56px;padding:40px 8vw 8px;will-change:transform;align-items:flex-start}
+.tl-card{flex:0 0 min(360px,78vw);position:relative}
+.tl-card::before{
+  content:'';position:absolute;top:-28px;left:50%;margin-left:-6px;width:12px;height:12px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 0 1.5px var(--accent);
+}
+.tl-stage{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin:14px 0 8px}
+.tl-card figure{margin:0}
+.tl-card figure img{aspect-ratio:4/3;object-fit:cover}
+.tl-card figure img.fit{object-fit:contain;background:#fff}
+.tl-empty{
+  aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:repeating-linear-gradient(-45deg, transparent, transparent 12px, rgba(23,24,26,.05) 12px, rgba(23,24,26,.05) 13px);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-dim);padding:0 16px;
+}
+.tl-card p{font-size:.92rem;color:var(--ink-dim);margin:0}
+.tl-hint{font-family:var(--font-mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);padding:14px 8vw 0}
+
+/* ---------- larger body text ---------- */
+.big-p p{font-size:1.08rem;line-height:1.75}
+
+/* ---------- code file links ---------- */
+.code-files{display:grid;gap:10px;margin-bottom:18px}
+.code-files a{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  border:1px solid var(--line);background:var(--bg-2);padding:11px 16px;
+  text-decoration:none;transition:border-color .25s, background .25s;
+}
+.code-files a span{font-family:var(--font-mono);font-size:12px;color:var(--ink)}
+.code-files a em{font-family:var(--font-mono);font-size:10px;font-style:normal;letter-spacing:.08em;color:var(--ink-dim);text-transform:uppercase}
+.code-files a:hover{border-color:var(--accent);background:var(--accent-soft)}
+.code-files a:hover span{color:var(--accent)}
+
+/* ---------- figure cell locked to its text column's height ---------- */
+.match-h{position:relative;min-height:260px}
+.match-h figure{position:absolute;inset:0;display:flex;flex-direction:column}
+.match-h img{flex:1;min-height:0;object-fit:contain;width:100%}
+
+/* ---------- physical product grid: right image fills the column height ---------- */
+.pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:stretch;margin-top:10px}
+.pp-tall{display:flex;flex-direction:column}
+.pp-tall img{flex:1;height:100%;object-fit:cover;min-height:0}
+@media(max-width:900px){.pp-grid{grid-template-columns:1fr}.pp-tall img{height:auto}}
+
+/* ---------- scroll-in transitions ---------- */
+.rv,.rv-l,.rv-r{opacity:0;transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1)}
+.rv{transform:translateY(34px)}
+.rv-l{transform:translateX(-46px)}
+.rv-r{transform:translateX(46px)}
+.in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
+.in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+</style>
 </head>
 <body>
 <div class="grid-bg"></div>
+
 <nav>
   <a href="../index.html" aria-label="Home">
     <svg class="nav-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -23,17 +163,333 @@
     <a href="../index.html#projects">← All Projects</a>
   </div>
 </nav>
-<section style="min-height:100vh;display:flex;flex-direction:column;justify-content:center">
-  <div class="kicker">Project</div>
-  <h2 class="section-title">Lecture Pulse</h2>
+
+<div class="case">
+
+<!-- ================= HERO ================= -->
+<section class="case-hero in">
+  <div class="kicker rv">Human Centred Design — Imperial College London · 2025–26</div>
+  <h2 class="section-title rv dl1">Lecture Pulse</h2>
   <div class="rule" style="transform:scaleX(1)"></div>
-  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-dim);letter-spacing:.08em">Human Centred Design — Imperial College London</p>
-  <p style="color:var(--ink-dim);margin-top:26px;max-width:640px">Full project write-up coming soon —
-  photos, CAD, design decisions and lessons learned.</p>
+  <div class="split wide-r">
+    <div>
+      <div class="contribs rv dl1">TEAM X-RAAY — WITH <a href="https://www.linkedin.com/in/romasyrry-shunmugam-b38804389/" target="_blank" rel="noopener">Roma Krishna Moorthy</a> · <a href="https://www.linkedin.com/in/yusra-ali-565b092b0/" target="_blank" rel="noopener">Yusra Ali</a></div>
+      <p class="rv dl2" style="margin-top:18px">A real-time lecture feedback system: a physical reaction pad that lets students signal
+      focus level and questions live, aggregated across the room into a rolling <b>focus score</b>
+      and anonymous <b>question alerts</b> on the lecturer's screen.</p>
+      <p class="rv dl2">No apps, no phones out — the pad only powers on when a phone is placed <b>into</b> its
+      slot, turning "put your phone away" into the on-switch.</p>
+      <div class="case-meta awards rv dl3">
+        <span class="award">Grade: A</span>
+        <span class="award special">Selected to Present — Great Exhibition Road Festival</span>
+      </div>
+    </div>
+    <figure class="rv-r dl1">
+      <img src="../photos/lecturepulse-closed.png" alt="Lecture Pulse reaction pad">
+      <figcaption>The reaction pad — final prototype</figcaption>
+    </figure>
+  </div>
 </section>
+
+<!-- ================= SYSTEM ================= -->
+<section class="watch">
+  <div class="kicker rv">01 — System</div>
+  <h2 class="section-title rv dl1">How It Works</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <div class="rv-l dl1">
+      <p>Each pad is an ESP32 running as a <b>Wi-Fi WebSocket client</b>: debounced button
+      events are sent as JSON to a local Python bridge, which maintains the room state and
+      rebroadcasts it to a Chrome overlay on the lecturer's laptop — averaging responses into
+      a focus score from −10 to +10, mapped onto an RGB colour scale, with question alerts
+      raised anonymously.</p>
+      <p>Pads auto-reconnect if the link drops mid-lecture, and the system evolved through an
+      earlier <b>ESP-NOW mesh + USB serial hub</b> architecture before landing on the fully
+      wireless design.</p>
+    </div>
+    <div class="spec-list rv-r dl2">
+      <div class="spec-item"><div class="t">Network</div><div class="d">ESP32 pads as Wi-Fi WebSocket clients → Python bridge server → browser overlay</div></div>
+      <div class="spec-item"><div class="t">Interface</div><div class="d">Illuminated focus buttons + LED indicator + large question button</div></div>
+      <div class="spec-item"><div class="t">Power</div><div class="d">3.7 V LiPo with LiPo Amigo Pro charging — switched by the phone-slot detector</div></div>
+      <div class="spec-item"><div class="t">Display</div><div class="d">Tampermonkey overlay — live focus score (−10…+10 → RGB) and question alerts</div></div>
+    </div>
+  </div>
+  <div class="arch rv dl2">
+    <span class="node">STUDENT PAD ESP32</span>
+    <span class="link">— Wi-Fi WEBSOCKET →</span>
+    <span class="node">PYTHON BRIDGE</span>
+    <span class="link">— WEBSOCKET →</span>
+    <span class="node">LECTURER OVERLAY</span>
+  </div>
+
+  <!-- ---- electronics breakdown ---- -->
+  <div class="tech-h rv">Electronics</div>
+  <div class="split" style="align-items:stretch;grid-template-columns:1.5fr 1fr">
+    <div class="rv-l big-p">
+      <p>All four inputs are momentary switches on <b>GPIO 13 / 12 / 14 / 27</b> (happy, neutral,
+      sad, question), configured <b>INPUT_PULLUP</b> and read active-low with software debouncing —
+      no external resistors on the signal side. A <b>limit switch on GPIO 26</b> sits under the
+      phone slot: the pad is electrically idle until a phone physically lands in the slot,
+      which also drives the green status LED on GPIO 25.</p>
+      <p>Power is a single <b>3.7 V LiPo cell</b> through a <b>LiPo Amigo Pro</b>, giving protected
+      charging and clean delivery to the ESP32's regulator, so the pad runs fully untethered
+      through a lecture. A side USB port exposes the ESP32 for flashing and charging without
+      opening the case.</p>
+    </div>
+    <div class="rv-r match-h"><figure><img src="../photos/lecturepulse/circuitry.png" alt="Final pad circuitry diagram" loading="lazy"><figcaption>Final pad circuitry</figcaption></figure></div>
+  </div>
+
+  <!-- ---- code breakdown ---- -->
+  <div class="tech-h rv">Code</div>
+  <div class="split" style="align-items:start">
+    <div class="rv-l">
+      <div class="codebox" style="margin-top:9px">
+<span class="c">// pad → bridge, per button press</span>
+{ "studentId": 1, "type": "vote", "mood": "happy", "active": true }
+
+<span class="c">// bridge scoring loop (10 Hz)</span>
+target = mean(latest_vote per active pad)          <span class="c">// +10 / 0 / −10</span>
+score += (target − score) * <span class="k">0.05</span>                  <span class="c">// exponential smoothing</span>
+
+<span class="c">// overlay: score → colour</span>
+−10 → <span class="k">rgb(255,0,0)</span>   0 → <span class="k">rgb(255,255,0)</span>   +10 → <span class="k">rgb(0,255,0)</span></div>
+      <div class="code-files" style="margin:20px 0 0">
+        <a href="https://github.com/XavierGoff/Lecture-Pulse/blob/main/Code/pad-firmware/ESP32_StudentStation.ino" target="_blank" rel="noopener"><span>ESP32_StudentStation.ino</span><em>pad firmware — Arduino</em></a>
+        <a href="https://github.com/XavierGoff/Lecture-Pulse/blob/main/Code/bridge/serial_bridge.py" target="_blank" rel="noopener"><span>serial_bridge.py</span><em>WebSocket bridge — Python</em></a>
+        <a href="https://github.com/XavierGoff/Lecture-Pulse/blob/main/Code/overlay/classroom-mood-bar.user.js" target="_blank" rel="noopener"><span>classroom-mood-bar.user.js</span><em>Tampermonkey overlay — JS</em></a>
+      </div>
+    </div>
+    <div class="rv-r">
+      <p>The firmware debounces each input and emits a JSON event per press over a persistent
+      WebSocket, retrying every 3 seconds if the link drops. The Python bridge
+      (<b>asyncio + websockets + pyserial</b>) auto-detects ESP32 serial hardware by USB
+      descriptor, holds the room state, and fans it out to any number of browser clients.</p>
+      <p>Scoring runs continuously: the room score is the mean of each active pad's latest vote
+      (+10 / 0 / −10), passed through an exponential smoothing filter at 10 Hz so the display
+      glides instead of jumping. A question alert fires only when <b>2+ pads raise it within a
+      10-second window</b> — one accidental press never interrupts the lecturer.</p>
+    </div>
+  </div>
+
+  <!-- ---- product & enclosure breakdown ---- -->
+  <div class="tech-h rv">The Physical Product</div>
+  <div class="pp-grid">
+    <div class="rv-l">
+      <p>I built the physical pad and its core electronics — the enclosure is designed
+      <b>around</b> its components, not the other way round. The base shell carries dedicated
+      bosses and trays that locate the ESP32, LiPo Amigo Pro and battery without fasteners on
+      the components themselves, keeping mass low and assembly fast.</p>
+      <p>The two shells clamp with <b>heat-set threaded inserts</b> and countersunk M3 screws,
+      leaving a completely seamless top face. A side cutout exposes the ESP32's USB port, so
+      the pad can be flashed and charged fully assembled — and the phone slot's underside
+      actuates the limit switch that wakes the whole system.</p>
+      <figure style="margin-top:8px"><img src="../photos/lecturepulse/casing-base.png" alt="Base shell CAD — component mounts" loading="lazy"
+        onerror="this.outerHTML='&lt;div class=&quot;tl-empty&quot;&gt;ADD photos/lecturepulse/casing-base.png&lt;/div&gt;'"><figcaption>Base shell — component mounts &amp; heat-set bosses</figcaption></figure>
+    </div>
+    <figure class="pp-tall rv-r"><img src="../photos/lecturepulse-open.png" alt="Pad internals" loading="lazy"><figcaption>Full assembly — internals</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= BUILD TIMELINE ================= -->
+<div class="tl-wrap" id="tl-wrap">
+  <div class="tl-sticky">
+    <div class="tl-head">
+      <div class="kicker">02 — Prototyping</div>
+      <h2 class="section-title">Four Builds, One Product</h2>
+      <div class="rule" style="transform:scaleX(1)"></div>
+    </div>
+    <div class="tl-viewport">
+      <div class="tl-track" id="tl-track">
+        <div class="tl-card">
+          <figure><img src="../photos/lecturepulse/breadboard-v1.jpg" alt="First breadboard button tests" loading="lazy"><figcaption>Arduino R4 button tests</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Electronics 01 — Proof of Wiring</div>
+            <p>Six buttons on an Arduino R4, INPUT_PULLUP, raw serial output. Proved the input wiring and debouncing approach before any system logic existed.</p>
+          </div>
+        </div>
+        <div class="tl-card rev">
+          <figure><img src="../photos/lecturepulse/tinkercad-v1.png" alt="TinkerCad wiring plan" loading="lazy"><figcaption>TinkerCad wiring plan</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Electronics 02 — Scoring Engine</div>
+            <p>One button set cycling between four virtual students. Introduced the engine that survived to production: per-student votes, exponential smoothing, the 2-in-10 s question window, and the SCORE/QUESTION serial protocol.</p>
+          </div>
+        </div>
+        <div class="tl-card">
+          <figure><img src="../photos/lecturepulse/breadboard.jpg" alt="Three-station breadboard" loading="lazy"><figcaption>Three-station breadboard</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Electronics 03 — Multi-Student Input</div>
+            <p>Three fixed 4-button stations across 12 GPIOs — genuine simultaneous input feeding the same engine, displayed live through the serial bridge.</p>
+          </div>
+        </div>
+        <div class="tl-card rev">
+          <figure><img class="fit" src="../photos/lecturepulse/cad-v1.jpg" alt="Enclosure V1 CAD" loading="lazy"><figcaption>V1 — box with phone insert</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Enclosure V1 — The Box</div>
+            <p>A large case with an under-slot phone insert and top button holes. Functionally complete but bulky and material-inefficient — rejected on both packaging and feel.</p>
+          </div>
+        </div>
+        <div class="tl-card">
+          <figure><img class="fit" src="../photos/lecturepulse/casing-v2.png" alt="Enclosure V2 CAD" loading="lazy" onerror="this.outerHTML='<div class=\'tl-empty\'>ADD photos/lecturepulse/casing-v2.png</div>'"><figcaption>V2 — compact rounded casing</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Enclosure V2 — Compact Rework</div>
+            <p>The game-controller form: dramatically smaller, rounded, with the phone slot integrated on top. Chosen after user testing showed the familiar shape increased willingness to engage.</p>
+          </div>
+        </div>
+        <div class="tl-card rev">
+          <figure><img class="fit" src="../photos/lecturepulse/pad-internals.png" alt="Integrated electronics render" loading="lazy" onerror="this.outerHTML='<div class=\'tl-empty\'>ADD photos/lecturepulse/pad-internals.png</div>'"><figcaption>Component mounting &amp; wiring paths</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Integration — Electronics In</div>
+            <p>Dedicated mounts for the ESP32, Amigo Pro and battery, heat-set inserts, and the USB cutout — the electronics and enclosure designed as one system.</p>
+          </div>
+        </div>
+        <div class="tl-card">
+          <figure><img src="../photos/lecturepulse/finalpic.png" alt="Final Lecture Pulse pad" loading="lazy" onerror="this.outerHTML='<div class=\'tl-empty\'>ADD photos/lecturepulse/finalpic.png</div>'"><figcaption>The production pad</figcaption></figure>
+          <div class="tl-txt">
+            <div class="tl-stage">Final — Wireless Product</div>
+            <p>Per-student ESP32 pads over Wi-Fi WebSockets, LiPo powered, phone-slot switched — as demoed at the Great Exhibition Road Festival.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tl-hint">SCROLL — THE BUILD MOVES FORWARD</div>
+  </div>
+</div>
+
+<!-- ================= FESTIVAL ================= -->
+<section class="watch">
+  <div class="kicker rv">03 — Public Showcase</div>
+  <h2 class="section-title rv dl1">Great Exhibition Road Festival</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <p class="rv-l dl1">Lecture Pulse was selected for Imperial's <b>Great Exhibition Road Festival</b>, where we
+    demoed it live to the public. Visitors pressed the pads and watched the room's focus score
+    move in real time on screen.</p>
+    <p class="rv-r dl1">For the stand I built a dedicated <b>ESP-NOW judging system</b> — two wireless judge pads
+    and a master relay ESP32 feeding the live display — so groups of visitors could vote
+    simultaneously without any Wi-Fi setup on site.</p>
+  </div>
+  <figure class="rv dl1" style="margin-top:34px"><img src="../photos/lecturepulse/gerf-1.jpg" alt="Demoing Lecture Pulse at the festival" loading="lazy"><figcaption>Demoing the live system</figcaption></figure>
+  <div class="carousel-row" style="grid-template-columns:1fr 1fr;margin-top:26px">
+    <figure class="rv dl2"><img src="../photos/lecturepulse/gerf-2.jpg" alt="Visitors at the Lecture Pulse stand" loading="lazy"><figcaption>Visitors trying the pads</figcaption></figure>
+    <figure class="rv dl3"><img src="../photos/lecturepulse/gerf-4.jpg" alt="The Lecture Pulse stand" loading="lazy"><figcaption>The X-RAAY stand</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= REPORTS ================= -->
+<section class="watch">
+  <div class="kicker rv">04 — Reports</div>
+  <h2 class="section-title rv dl1">The Full Story</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <p class="rv dl1" style="max-width:760px">The complete design process is documented in two reports — flip through them here.
+  <b>Discovery</b> covers research, interviews and concept selection; <b>Delivery</b> covers
+  prototyping, electronics, software and user testing.</p>
+  <div class="carousel-row">
+    <div class="carousel rv dl1" id="carousel-discovery">
+      <div class="frame">
+        <img alt="Discovery report page">
+        <button class="c-btn c-prev" aria-label="Previous page">‹</button>
+        <button class="c-btn c-next" aria-label="Next page">›</button>
+      </div>
+      <div class="c-bar"><span>Discovery Report</span><span class="c-count"></span></div>
+    </div>
+    <div class="carousel rv dl2" id="carousel-delivery">
+      <div class="frame">
+        <img alt="Delivery report page">
+        <button class="c-btn c-prev" aria-label="Previous page">‹</button>
+        <button class="c-btn c-next" aria-label="Next page">›</button>
+      </div>
+      <div class="c-bar"><span>Delivery Report</span><span class="c-count"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NEXT ================= -->
+<section class="watch">
+  <div class="kicker rv">05 — More</div>
+  <h2 class="section-title rv dl1">CAD, Electronics &amp; Code</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <p class="rv dl1" style="max-width:760px">Full CAD, wiring diagrams, firmware and the visual-overlay code are being assembled
+  into an open repository alongside the reports.</p>
+  <!-- NOTE: create the GitHub repo from the lecture-pulse-repo folder, then point this link at it -->
+  <a class="repo-link rv dl2" href="https://github.com/XavierGoff" target="_blank" rel="noopener">github.com/XavierGoff ↗</a>
+</section>
+
+</div>
+
+<div class="back-row">
+  <a class="repo-link" href="../index.html#projects">← Back to all projects</a>
+</div>
+
 <footer>
   <span>© 2026 XAVIER GOFF</span>
   <span>DESIGNED BY XAVIER · CODED WITH <a class="credit" href="https://claude.ai" target="_blank" rel="noopener">CLAUDE</a></span>
 </footer>
+
+<script>
+/* scroll-in transitions */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.18 });
+document.querySelectorAll('section.watch').forEach(s => io.observe(s));
+
+/* ---------- report carousels ---------- */
+function initCarousel(rootId, base, count) {
+  const root = document.getElementById(rootId);
+  const img = root.querySelector('img');
+  const counter = root.querySelector('.c-count');
+  let i = 0;
+  const src = n => `${base}page-${String(n + 1).padStart(2, '0')}.jpg`;
+  function show(n) {
+    i = (n + count) % count;
+    img.style.opacity = 0;
+    const next = new Image();
+    next.onload = () => { img.src = next.src; img.style.opacity = 1; };
+    next.src = src(i);
+    counter.textContent = `PAGE ${i + 1} / ${count}`;
+    /* preload neighbours for snappy flipping */
+    new Image().src = src((i + 1) % count);
+    new Image().src = src((i - 1 + count) % count);
+  }
+  root.querySelector('.c-prev').addEventListener('click', () => show(i - 1));
+  root.querySelector('.c-next').addEventListener('click', () => show(i + 1));
+  show(0);
+}
+initCarousel('carousel-discovery', '../photos/lecturepulse/discovery/', 17);
+initCarousel('carousel-delivery', '../photos/lecturepulse/delivery/', 12);
+
+/* ---------- build timeline: slides right as you scroll ---------- */
+const tlWrap = document.getElementById('tl-wrap');
+const tlTrack = document.getElementById('tl-track');
+let tlSmooth = 0;
+function tlMaxShift() {
+  const cards = tlTrack.querySelectorAll('.tl-card');
+  if (!cards.length) return 0;
+  const first = cards[0], last = cards[cards.length - 1];
+  /* final position: last card's right edge sits as far from the right side
+     as the first card sits from the left */
+  return Math.max(0, last.offsetLeft + last.offsetWidth + first.offsetLeft - innerWidth);
+}
+function tlSize() {
+  /* scroll distance ≈ horizontal travel; near-zero dwell at the end so the
+     page moves on while the timeline is still in view */
+  const maxShift = tlMaxShift();
+  tlWrap.style.height = (maxShift * 0.65 + innerHeight) + 'px';   /* comfortable ride, no dwell */
+}
+addEventListener('resize', tlSize, { passive: true });
+addEventListener('load', tlSize);
+tlSize();
+function tlLoop() {
+  const total = tlWrap.offsetHeight - innerHeight;
+  const target = Math.min(1, Math.max(0, -tlWrap.getBoundingClientRect().top / total));
+  tlSmooth += (target - tlSmooth) * 0.22;   /* tighter follow so the end never lags */
+  const maxShift = tlMaxShift();
+  /* progressive easing: steady through the cards, accelerating toward the end so
+     the sideways motion hands off seamlessly into normal downward scrolling */
+  const eased = 0.55 * tlSmooth + 0.45 * tlSmooth * tlSmooth * tlSmooth;
+  tlTrack.style.transform = `translateX(${(-eased * maxShift).toFixed(1)}px)`;
+  requestAnimationFrame(tlLoop);
+}
+requestAnimationFrame(tlLoop);
+</script>
 </body>
 </html>
