@@ -16,7 +16,7 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:hidden}
+html{scroll-behavior:smooth}
 body{
   background:var(--bg);
   color:var(--ink);
@@ -88,7 +88,7 @@ a:hover > .nav-mark path{fill:var(--accent)}
 }
 
 /* ---------- section scaffolding ---------- */
-section{position:relative;padding:130px 8vw;max-width:1200px;margin:0 auto}
+section{position:relative;padding:130px 8vw;max-width:1200px;margin:0 auto;overflow-x:clip}
 .kicker{
   font-family:var(--font-mono);font-size:12px;letter-spacing:.45em;
   text-transform:uppercase;color:var(--accent);margin-bottom:18px;
