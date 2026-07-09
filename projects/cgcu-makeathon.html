@@ -3,14 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CGCU Extreme Weather Makeathon — Xavier Goff</title>
+<title>Extreme Cold Rescue Rover — Xavier Goff</title>
+<meta name="description" content="1st-place CGCU Extreme Weather Makeathon build — a tracked rescue rover for soft snow.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
+<style>
+/* ---------- page-local styles ---------- */
+.case section{padding:80px 8vw}
+.case section.case-hero{padding-top:170px}   /* clears the fixed nav */
+.case p{color:var(--ink-dim);margin-bottom:16px}
+.case p b{color:var(--ink);font-weight:500}
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 8px}
+
+/* split layouts: text and imagery share the row */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+.split.wide-r{grid-template-columns:1fr 1.15fr}
+.split.wide-l{grid-template-columns:1.15fr 1fr}
+@media(max-width:900px){.split,.split.wide-r,.split.wide-l{grid-template-columns:1fr}}
+
+figure{border:1px solid var(--line);background:#fff;padding:10px 10px 0;margin:0}
+figure img,figure video{width:100%;display:block}
+figcaption{
+  padding:11px 4px;text-align:center;font-family:var(--font-mono);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);
+}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;margin-top:40px}
+.elec-grid{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:34px;align-items:center;margin-top:10px}
+@media(max-width:900px){.elec-grid{grid-template-columns:1fr}}
+.diagram-row{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:40px}
+.diagram-row figure img{height:380px;width:100%;object-fit:contain;background:#fff}
+@media(max-width:900px){.diagram-row{grid-template-columns:1fr}.diagram-row figure img{height:auto}}
+.snow-row figure img{aspect-ratio:1/1;object-fit:cover}   /* equal heights — no stagger */
+
+.spec-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.spec-item{background:var(--bg-2);padding:16px 18px}
+.spec-item .t{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.spec-item .d{font-size:.92rem;color:var(--ink-dim)}
+
+.repo-link{
+  display:inline-block;margin-top:20px;font-family:var(--font-mono);font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;
+  border:1.5px solid var(--ink);padding:13px 26px;transition:all .3s;
+}
+.repo-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+.back-row{padding:0 8vw 90px;max-width:1200px;margin:0 auto}
+
+/* ---------- scroll-in transitions ---------- */
+.rv,.rv-l,.rv-r{opacity:0;transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1)}
+.rv{transform:translateY(34px)}
+.rv-l{transform:translateX(-46px)}
+.rv-r{transform:translateX(46px)}
+.in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
+.in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+/* figures get a subtle settle-in scale */
+figure.rv,figure.rv-l,figure.rv-r{will-change:transform}
+</style>
 </head>
 <body>
 <div class="grid-bg"></div>
+
 <nav>
   <a href="../index.html" aria-label="Home">
     <svg class="nav-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -23,17 +76,159 @@
     <a href="../index.html#projects">← All Projects</a>
   </div>
 </nav>
-<section style="min-height:100vh;display:flex;flex-direction:column;justify-content:center">
-  <div class="kicker">Project</div>
-  <h2 class="section-title">CGCU Extreme Weather Makeathon</h2>
+
+<div class="case">
+
+<!-- ================= HERO: title, summary and render together ================= -->
+<section class="case-hero in">
+  <div class="kicker rv">CGCU Extreme Weather Makeathon — Imperial College London · 2025</div>
+  <h2 class="section-title rv dl1">Extreme Cold Rescue Rover</h2>
   <div class="rule" style="transform:scaleX(1)"></div>
-  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-dim);letter-spacing:.08em">CGCU — Imperial College London · 2025</p>
-  <p style="color:var(--ink-dim);margin-top:26px;max-width:640px">Full project write-up coming soon —
-  photos, CAD, design decisions and lessons learned.</p>
+  <div class="split wide-r">
+    <div>
+      <div class="contribs rv dl1">WITH <a href="https://www.linkedin.com/in/christian-gorchev-41a697380/" target="_blank" rel="noopener">Christian Gorchev</a> · <span>Dimitrios Tsipolitis</span></div>
+      <p class="rv dl2" style="margin-top:18px">A tracked rescue robot designed to operate on snowy, unstable terrain — built around
+      low ground pressure, robust mobility and practical field deployment.</p>
+      <p class="rv dl2">Taken from concept to a working, field-tested prototype within the makeathon's time
+      limit: full CAD assembly, custom drivetrain, ESP32 RF control and a snow-tested chassis.</p>
+      <div class="case-meta awards rv dl3">
+        <span class="award special">1st Place — CGCU Makeathon Winners</span>
+        <span class="award">Sponsored by PCBWay</span>
+      </div>
+    </div>
+    <figure class="rv-r dl1">
+      <img src="../photos/makeathon/hero.png" alt="Extreme Cold Rescue Rover — CAD render">
+      <figcaption>Final CAD render</figcaption>
+    </figure>
+  </div>
 </section>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="watch">
+  <div class="kicker rv">01 — Overview</div>
+  <h2 class="section-title rv dl1">The Problem</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <div class="rv-l dl1">
+      <p>How can a small ground robot move across soft snow without sinking, stalling, or becoming
+      unstable? Small wheels or narrow tracks concentrate weight into high local pressure — the
+      vehicle digs in and loses usable traction.</p>
+      <p>Our answer was a lightweight tracked platform that spreads its weight over a large contact
+      area, driven by a high-torque drivetrain sized for resistive snow loading rather than top
+      speed. The rover was treated as an <b>engineering system</b>: terrain interaction, drivetrain
+      performance, structural layout and power architecture balanced against tight time and budget
+      constraints.</p>
+    </div>
+    <div class="spec-list rv-r dl2">
+      <div class="spec-item"><div class="t">Mobility</div><div class="d">Tracked drivetrain with widened footprint for flotation and terrain conformity</div></div>
+      <div class="spec-item"><div class="t">Drive</div><div class="d">High-torque dual-motor configuration for low-speed force output under load</div></div>
+      <div class="spec-item"><div class="t">Chassis</div><div class="d">~300 × 250 mm laser-cut and 3D-printed structure with centralised mass</div></div>
+      <div class="spec-item"><div class="t">Control</div><div class="d">ESP32-based RF control with clean separation of logic and motor power</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MY ROLE ================= -->
+<section class="watch">
+  <div class="kicker rv">02 — My Role</div>
+  <h2 class="section-title rv dl1">Design &amp; Technical Build</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split wide-l">
+    <figure class="rv-l dl1">
+      <img src="../photos/makeathon/building.jpg" alt="Assembling the rover chassis" loading="lazy">
+      <figcaption>Chassis assembly</figcaption>
+    </figure>
+    <div class="rv-r dl2">
+      <p>I led the robot's design and technical build, taking it from CAD to a working tracked
+      prototype. I designed the mechanical layout — chassis panels, track modules, custom gears,
+      hubs and standoffs — built the electronics, and handled the wiring and code under a tight
+      deadline.</p>
+      <p>The mechanical design was produced as a full CAD assembly and manufactured as
+      <b>10 laser-cut panels</b> and <b>26 unique 3D-printed parts</b>, including custom tread
+      tracks with an integrated plow, drive gears and hubs, and a hinged electronics enclosure
+      designed for fast access during testing.</p>
+    </div>
+  </div>
+  <div class="fig-row">
+    <figure class="rv dl1"><img src="../photos/makeathon/starting-electronics.jpg" alt="Early electronics bring-up" loading="lazy"><figcaption>Electronics bring-up</figcaption></figure>
+    <figure class="rv dl2"><img src="../photos/makeathon/completed-electronics.jpg" alt="Completed electronics installed" loading="lazy"><figcaption>Completed power &amp; control stack</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= ELECTRONICS ================= -->
+<section class="watch">
+  <div class="kicker rv">03 — Electronics &amp; Control</div>
+  <h2 class="section-title rv dl1">System Architecture</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="elec-grid">
+    <figure class="rv-l dl1"><video src="../photos/makeathon/rf-link-demo.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Transmitter → receiver RF link test</figcaption></figure>
+    <div class="rv dl2">
+      <p>The rover runs a compact control and power architecture built for reliability first: an
+      ESP32 microcontroller with an RF receiver, a motor driver stage for the dual drive motors,
+      and battery power distribution with appropriate switching and fuse protection. Control
+      logic is separated from motor power so brown-outs under stall load can't reset the
+      controller.</p>
+      <p>The handheld controller is a matching ESP32 + RF transmitter build. Both were documented
+      as wiring diagrams before assembly, and the drive code covers teleop control plus a first
+      autonomous test mode.</p>
+    </div>
+    <figure class="rv-r dl3"><video src="../photos/makeathon/esp32-demo.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>ESP32 drive code — first bring-up</figcaption></figure>
+  </div>
+  <div class="diagram-row">
+    <figure class="rv dl1"><img src="../photos/makeathon/robot-electronics-diagram.png" alt="Robot electronics diagram" loading="lazy"><figcaption>Rover electronics diagram</figcaption></figure>
+    <figure class="rv dl2"><img src="../photos/makeathon/controller-electronics-diagram.png" alt="Controller electronics diagram" loading="lazy"><figcaption>Controller electronics diagram</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= FIELD TESTING ================= -->
+<section class="watch">
+  <div class="kicker rv">04 — Field Testing</div>
+  <h2 class="section-title rv dl1">On the Snow</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <p class="rv-l dl1">The rover was tested on real snow — validating flotation, traction and the RF link in
+    the conditions it was designed for, and earning <b>1st place</b> at the CGCU Extreme
+    Weather Makeathon.</p>
+    <p class="rv-r dl1">Testing wasn't tidy: the antenna needed a field repair mid-session, which the hinged
+    electronics enclosure made quick to reach — exactly the kind of serviceability the chassis
+    was designed for.</p>
+  </div>
+  <div class="fig-row snow-row">
+    <figure class="rv dl1"><img src="../photos/makeathon/robot-on-snow.jpg" alt="Rover driving on snow" loading="lazy"><figcaption>Flotation test on soft snow</figcaption></figure>
+    <figure class="rv dl2"><img src="../photos/makeathon/field-testing.jpg" alt="Field testing session" loading="lazy"><figcaption>Field testing</figcaption></figure>
+    <figure class="rv dl3"><img src="../photos/makeathon/fixing-antennae.jpg" alt="Antenna repair in the field" loading="lazy"><figcaption>Field repairs — antenna fix</figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= NEXT ================= -->
+<section class="watch">
+  <div class="kicker rv">05 — Next Steps</div>
+  <h2 class="section-title rv dl1">Where It Goes From Here</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <p class="rv dl1" style="max-width:760px">Planned improvements include an optimised motor torque/speed trade-off, environmental
+  sealing for wet and cold operation, terrain sensing for navigation, metal components in
+  high-wear locations, and semi-autonomous waypoint-based rescue behaviour.</p>
+  <p class="rv dl2">Full CAD, code, wiring diagrams and the bill of materials are open on GitHub:</p>
+  <a class="repo-link rv dl3" href="https://github.com/XavierGoff/Extreme-Cold-Rescue-Rover" target="_blank" rel="noopener">View the full repository ↗</a>
+</section>
+
+</div>
+
+<div class="back-row">
+  <a class="repo-link" href="../index.html#projects">← Back to all projects</a>
+</div>
+
 <footer>
   <span>© 2026 XAVIER GOFF</span>
   <span>DESIGNED BY XAVIER · CODED WITH <a class="credit" href="https://claude.ai" target="_blank" rel="noopener">CLAUDE</a></span>
 </footer>
+
+<script>
+/* scroll-in transitions for each section */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.18 });
+document.querySelectorAll('section.watch').forEach(s => io.observe(s));
+</script>
 </body>
 </html>
