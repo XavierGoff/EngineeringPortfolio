@@ -80,7 +80,12 @@ a:hover > .nav-mark path{fill:var(--accent)}
 }
 .nav-links a:hover{color:var(--ink)}
 .nav-links a:hover::after{width:100%}
-@media(max-width:640px){.nav-links{gap:18px}.nav-links a{font-size:10px}nav{padding:14px 20px}}
+@media(max-width:640px){.nav-links{gap:18px}.nav-links a{font-size:10px}nav{padding:14px 20px}.drop-arrow{display:none}}
+@media(max-width:480px){
+  .nav-links{gap:11px}
+  .nav-links a{font-size:9px;letter-spacing:.06em}
+  nav{padding:12px 14px}
+}
 
 /* ---------- section scaffolding ---------- */
 section{position:relative;padding:130px 8vw;max-width:1200px;margin:0 auto}

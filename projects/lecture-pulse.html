@@ -85,6 +85,7 @@ figure.plain img{object-fit:contain}
   padding:20px 22px;overflow-x:auto;white-space:pre;
 }
 .codebox .c{color:#7d8590}
+@media(max-width:640px){.codebox{font-size:10.5px;padding:14px}}
 .codebox .k{color:#e8a04a}
 
 /* ---------- horizontal build timeline (scroll-driven) ---------- */
@@ -119,7 +120,7 @@ figure.plain img{object-fit:contain}
 /* ---------- code file links ---------- */
 .code-files{display:grid;gap:10px;margin-bottom:18px}
 .code-files a{
-  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
   border:1px solid var(--line);background:var(--bg-2);padding:11px 16px;
   text-decoration:none;transition:border-color .25s, background .25s;
 }
@@ -411,7 +412,7 @@ score += (target − score) * <span class="k">0.05</span>                  <span
   <p class="rv dl1" style="max-width:760px">Full CAD, wiring diagrams, firmware and the visual-overlay code are being assembled
   into an open repository alongside the reports.</p>
   <!-- NOTE: create the GitHub repo from the lecture-pulse-repo folder, then point this link at it -->
-  <a class="repo-link rv dl2" href="https://github.com/XavierGoff" target="_blank" rel="noopener">github.com/XavierGoff ↗</a>
+  <a class="repo-link rv dl2" href="https://github.com/XavierGoff/Lecture-Pulse" target="_blank" rel="noopener">View the full repository ↗</a>
 </section>
 
 </div>
