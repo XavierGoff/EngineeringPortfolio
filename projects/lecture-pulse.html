@@ -45,6 +45,11 @@ figure.plain img{object-fit:contain}
 }
 .arch .node{border:1.5px solid var(--ink);padding:10px 16px;color:var(--ink);background:#fff}
 .arch .link{color:var(--accent);white-space:nowrap}
+.arch .link b{font-weight:400}
+@media(max-width:640px){
+  .arch{flex-direction:column;gap:10px}
+  .arch .link .ar{display:inline-block;transform:rotate(90deg)}
+}
 
 /* ---------- report carousels ---------- */
 .carousel{border:1px solid var(--line);background:#fff;padding:12px}
@@ -135,6 +140,12 @@ figure.plain img{object-fit:contain}
 .match-h{position:relative;min-height:260px}
 .match-h figure{position:absolute;inset:0;display:flex;flex-direction:column}
 .match-h img{flex:1;min-height:0;object-fit:contain;width:100%}
+@media(max-width:900px){
+  /* single column: no height-matching — the figure flows naturally */
+  .match-h{min-height:0}
+  .match-h figure{position:static}
+  .match-h img{flex:none;height:auto}
+}
 
 /* ---------- physical product grid: right image fills the column height ---------- */
 .pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:stretch;margin-top:10px}
@@ -220,9 +231,9 @@ figure.plain img{object-fit:contain}
   </div>
   <div class="arch rv dl2">
     <span class="node">STUDENT PAD ESP32</span>
-    <span class="link">— Wi-Fi WEBSOCKET →</span>
+    <span class="link">— Wi-Fi WEBSOCKET <b class="ar">→</b></span>
     <span class="node">PYTHON BRIDGE</span>
-    <span class="link">— WEBSOCKET →</span>
+    <span class="link">— WEBSOCKET <b class="ar">→</b></span>
     <span class="node">LECTURER OVERLAY</span>
   </div>
 
