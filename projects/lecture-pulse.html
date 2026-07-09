@@ -433,7 +433,7 @@ score += (target − score) * <span class="k">0.05</span>                  <span
 /* scroll-in transitions */
 const io = new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-}, { threshold: 0.18 });
+}, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
 document.querySelectorAll('section.watch').forEach(s => io.observe(s));
 
 /* ---------- report carousels ---------- */
