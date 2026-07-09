@@ -18,6 +18,7 @@
 .case-meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 8px}
 
 .split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+.split > *{min-width:0}
 .split.wide-r{grid-template-columns:1fr 1.15fr}
 .split.wide-l{grid-template-columns:1.15fr 1fr}
 @media(max-width:900px){.split,.split.wide-r,.split.wide-l{grid-template-columns:1fr}}
@@ -80,6 +81,7 @@ figure.plain img{object-fit:contain}
   color:var(--accent);margin:54px 0 14px;
 }
 .codebox{
+  max-width:100%;
   background:#17181a;color:#d8e6d8;border:1px solid #2a2c30;
   font-family:var(--font-mono);font-size:12.5px;line-height:1.7;
   padding:20px 22px;overflow-x:auto;white-space:pre;
@@ -136,6 +138,7 @@ figure.plain img{object-fit:contain}
 
 /* ---------- physical product grid: right image fills the column height ---------- */
 .pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:stretch;margin-top:10px}
+.pp-grid > *{min-width:0}
 .pp-tall{display:flex;flex-direction:column}
 .pp-tall img{flex:1;height:100%;object-fit:cover;min-height:0}
 @media(max-width:900px){.pp-grid{grid-template-columns:1fr}.pp-tall img{height:auto}}
