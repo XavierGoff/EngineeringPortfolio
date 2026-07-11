@@ -4,36 +4,186 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blackout Robotics — Power Play — Xavier Goff</title>
+<meta name="description" content="FTC 19280 Power Play robot — UK National Champions. Virtual four-bar pass-through architecture.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=2">
+<style>
+.case section{padding:80px 8vw;overflow-x:clip}
+.case section.case-hero{padding-top:170px}
+.case p{color:var(--ink-dim);margin-bottom:16px}
+.case p b{color:var(--ink);font-weight:500}
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 8px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+.split > *{min-width:0}
+.split.wide-r{grid-template-columns:1fr 1.15fr}
+.split.wide-l{grid-template-columns:1.15fr 1fr}
+@media(max-width:900px){.split,.split.wide-r,.split.wide-l{grid-template-columns:1fr}}
+figure{border:1px solid var(--line);background:#fff;padding:10px 10px 0;margin:0}
+figure img,figure video{width:100%;display:block}
+figcaption{padding:11px 4px;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;margin-top:40px}
+.spec-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.spec-item{background:var(--bg-2);padding:16px 18px}
+.spec-item .t{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.spec-item .d{font-size:.92rem;color:var(--ink-dim)}
+.repo-link{display:inline-block;margin-top:20px;font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);padding:13px 26px;transition:all .3s}
+.repo-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+.back-row{padding:0 8vw 90px;max-width:1200px;margin:0 auto}
+.rv,.rv-l,.rv-r{opacity:0;transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1)}
+.rv{transform:translateY(34px)}
+.rv-l{transform:translateX(-46px)}
+.rv-r{transform:translateX(46px)}
+.in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
+.in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+</style>
 </head>
 <body>
 <div class="grid-bg"></div>
 <nav>
   <a href="../index.html" aria-label="Home">
     <svg class="nav-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <path d="M26 23 L54 45 L75 77 L47 54 Z"/>
-      <path d="M76 24 L58 42 L66 50 Z"/>
-      <path d="M24 76 L42 58 L34 50 Z"/>
+      <path d="M26 23 L54 45 L75 77 L47 54 Z"/><path d="M76 24 L58 42 L66 50 Z"/><path d="M24 76 L42 58 L34 50 Z"/>
     </svg>
   </a>
-  <div class="nav-links">
-    <a href="../index.html#projects">← All Projects</a>
-  </div>
+  <div class="nav-links"><a href="../index.html#projects">← All Projects</a></div>
 </nav>
-<section style="min-height:100vh;display:flex;flex-direction:column;justify-content:center">
-  <div class="kicker">Project</div>
-  <h2 class="section-title">Blackout Robotics — Power Play</h2>
+
+<div class="case">
+
+<section class="case-hero in">
+  <div class="kicker rv">FTC 19280 · UK235 — Power Play · 2022–23</div>
+  <h2 class="section-title rv dl1">Blackout Robotics — Power Play</h2>
   <div class="rule" style="transform:scaleX(1)"></div>
-  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-dim);letter-spacing:.08em">FTC — 19280 · UK235 · 2022–23</p>
-  <p style="color:var(--ink-dim);margin-top:26px;max-width:640px">Full project write-up coming soon —
-  photos, CAD, design decisions and lessons learned.</p>
+  <div class="split wide-r">
+    <div>
+      <div class="contribs rv dl1">WITH <a href="https://www.linkedin.com/in/ryan-ganguli-087910319/" target="_blank" rel="noopener">Ryan Ganguli</a> · <a href="https://www.linkedin.com/in/harshiv-puri-4500202b2/" target="_blank" rel="noopener">Harshiv Puri</a></div>
+      <p class="rv dl2" style="margin-top:18px">Power Play was won on cones: scoring them onto junctions of varying heights, with
+      ownership bonuses for finishing on top. Our robot was built around a
+      <b>pass-through architecture</b> — intake a cone on one side, score it on the other,
+      never rotate between stack and junction.</p>
+      <p class="rv dl2">Cutting that turn out of every cycle was the single biggest contributor to our cycle
+      times — and the season ended with the <b>UK National Championship</b>.</p>
+      <div class="case-meta awards rv dl3">
+        <span class="award special">UK National Champions</span>
+        <span class="award">South East Regional — Winning Alliance Captain</span>
+        <span class="award">South East Regional — Inspire Award</span>
+      </div>
+    </div>
+    <figure class="rv-r dl1">
+      <img src="../photos/blackout/s1-hero.jpg" alt="Power Play robot">
+      <figcaption>The robot — competition ready</figcaption>
+    </figure>
+  </div>
 </section>
+
+<section class="watch">
+  <div class="kicker rv">01 — Reveal</div>
+  <h2 class="section-title rv dl1">Robot Reveal</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <figure class="rv dl1" style="max-width:860px;margin:10px auto 0">
+    <video src="../photos/blackout/s1-reveal.mp4" controls muted playsinline preload="metadata"></video>
+    <figcaption>Season reveal — Power Play 2022–23</figcaption>
+  </figure>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">02 — Strategy</div>
+  <h2 class="section-title rv dl1">Game Analysis &amp; Strategy</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <div class="rv-l dl1">
+      <p>Taller junctions scored more, and owning a junction at the buzzer scored again — so our
+      match plan was high-junction cycles for the bulk of the match, then an endgame sweep to
+      claim ownership across the field.</p>
+      <p>Every mechanism served the cycle plan: collect a cone at the stack, drive straight
+      backwards, place it — same orientation, opposite face of the robot, no rotation. As
+      Design Lead I owned the full robot CAD and mechanism design.</p>
+    </div>
+    <div class="spec-list rv-r dl2">
+      <div class="spec-item"><div class="t">Arm</div><div class="d">Virtual four-bar linkage — pass-through cone transfer between the robot's two faces</div></div>
+      <div class="spec-item"><div class="t">Drivebase</div><div class="d">Open channel lets junction poles enter the frame — the chassis aligns the drop passively</div></div>
+      <div class="spec-item"><div class="t">Extension</div><div class="d">Linear slides on both faces for the fastest route to high junctions</div></div>
+      <div class="spec-item"><div class="t">Pit efficiency</div><div class="d">Quick-access battery slot for seconds-fast swaps between matches</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">03 — Design</div>
+  <h2 class="section-title rv dl1">Mechanism Design</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split wide-l">
+    <figure class="rv-l dl1">
+      <img src="../photos/blackout/s1-cad-iso.png" alt="Robot CAD — iso view" loading="lazy">
+      <figcaption>Full assembly CAD</figcaption>
+    </figure>
+    <div class="rv-r dl2">
+      <p>The pass-through requirement — pick up on one face, deposit in the same orientation on
+      the other — left two candidate mechanisms: a differential arm or a virtual four-bar.
+      Given the differential's complexity and the span to cover between the two slide sets,
+      the <b>virtual four-bar won on simplicity, packaging and reliability</b>.</p>
+      <p>The junction-capturing drivebase completed the system: driving at a pole naturally
+      guided it to where the cone would fall, removing precision alignment from every cycle.</p>
+    </div>
+  </div>
+  <div class="fig-row">
+    <figure class="rv dl1"><video src="../photos/blackout/s1-four-bar.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Virtual four-bar — refined motion</figcaption></figure>
+    <figure class="rv dl2"><video src="../photos/blackout/s1-scoring.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Full scoring cycles</figcaption></figure>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">04 — Results</div>
+  <h2 class="section-title rv dl1">Competition Results</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="fig-row">
+    <figure class="rv dl1"><img src="../photos/blackout/s1-extended.jpg" alt="Robot fully extended" loading="lazy"><figcaption>Full extension — high junction reach</figcaption></figure>
+    <figure class="rv dl2"><img src="../photos/gallery/2.jpg" alt="Inspire Award win" loading="lazy" style="aspect-ratio:4/3;object-fit:cover"><figcaption>Inspire Award — South East Regional</figcaption></figure>
+    <figure class="rv dl3"><img src="../photos/blackout/s1-team.jpg" alt="Team Blackout" loading="lazy" style="aspect-ratio:4/3;object-fit:cover"><figcaption>Team 19280</figcaption></figure>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">05 — Lessons</div>
+  <h2 class="section-title rv dl1">Lessons Learned</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <p class="rv-l dl1">The only failure of the entire competition was a stripped servo horn. The four-bar was
+    driven directly by its servos, and after a mid-tournament code change the two servos
+    briefly drove in opposite directions — full stall torque went straight through the horn
+    and destroyed it, taking out high-junction scoring for the rest of the event.</p>
+    <p class="rv-r dl1">A geared transmission would have limited the torque reaching the horn and likely let us
+    walk away from the same mistake unscathed. That lesson — <b>never drive a mechanism
+    directly off a servo</b> — permanently changed how we design drive interfaces on wear
+    parts, and carried straight into the next season's robot.</p>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">06 — Repository</div>
+  <h2 class="section-title rv dl1">CAD &amp; Repository</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <p class="rv dl1" style="max-width:760px">The complete assembly STEP, CAD screenshots and season footage are open on GitHub.</p>
+  <a class="repo-link rv dl2" href="https://github.com/XavierGoff/blackout-2023-robot-cad" target="_blank" rel="noopener">View the repository ↗</a>
+  <a class="repo-link rv dl2" href="blackout-centerstage.html" style="margin-left:14px">Next season: Centerstage →</a>
+</section>
+
+</div>
+
+<div class="back-row"><a class="repo-link" href="../index.html#projects">← Back to all projects</a></div>
+
 <footer>
   <span>© 2026 XAVIER GOFF</span>
   <span>DESIGNED BY XAVIER · CODED WITH <a class="credit" href="https://claude.ai" target="_blank" rel="noopener">CLAUDE</a></span>
 </footer>
+
+<script>
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+document.querySelectorAll('section.watch').forEach(s => io.observe(s));
+</script>
 </body>
 </html>

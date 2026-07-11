@@ -4,36 +4,206 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blackout Robotics — Centerstage — Xavier Goff</title>
+<meta name="description" content="FTC 19280 Centerstage robot — UK National Champions & Control Award. Data-driven design.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=2">
+<style>
+.case section{padding:80px 8vw;overflow-x:clip}
+.case section.case-hero{padding-top:170px}
+.case p{color:var(--ink-dim);margin-bottom:16px}
+.case p b{color:var(--ink);font-weight:500}
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 8px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+.split > *{min-width:0}
+.split.wide-r{grid-template-columns:1fr 1.15fr}
+.split.wide-l{grid-template-columns:1.15fr 1fr}
+@media(max-width:900px){.split,.split.wide-r,.split.wide-l{grid-template-columns:1fr}}
+figure{border:1px solid var(--line);background:#fff;padding:10px 10px 0;margin:0}
+figure img,figure video{width:100%;display:block}
+figcaption{padding:11px 4px;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;margin-top:40px}
+.fig-row.portrait{max-width:680px;margin-left:auto;margin-right:auto}
+.fig-row figure.fill{display:flex;flex-direction:column}
+.fig-row figure.fill img{flex:1;min-height:0;object-fit:cover}
+.spec-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.spec-item{background:var(--bg-2);padding:16px 18px}
+.spec-item .t{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.spec-item .d{font-size:.92rem;color:var(--ink-dim)}
+.repo-link{display:inline-block;margin-top:20px;font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);padding:13px 26px;transition:all .3s}
+.repo-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+.back-row{padding:0 8vw 90px;max-width:1200px;margin:0 auto}
+.rv,.rv-l,.rv-r{opacity:0;transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1)}
+.rv{transform:translateY(34px)}
+.rv-l{transform:translateX(-46px)}
+.rv-r{transform:translateX(46px)}
+.in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
+.in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+</style>
 </head>
 <body>
 <div class="grid-bg"></div>
 <nav>
   <a href="../index.html" aria-label="Home">
     <svg class="nav-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <path d="M26 23 L54 45 L75 77 L47 54 Z"/>
-      <path d="M76 24 L58 42 L66 50 Z"/>
-      <path d="M24 76 L42 58 L34 50 Z"/>
+      <path d="M26 23 L54 45 L75 77 L47 54 Z"/><path d="M76 24 L58 42 L66 50 Z"/><path d="M24 76 L42 58 L34 50 Z"/>
     </svg>
   </a>
-  <div class="nav-links">
-    <a href="../index.html#projects">← All Projects</a>
-  </div>
+  <div class="nav-links"><a href="../index.html#projects">← All Projects</a></div>
 </nav>
-<section style="min-height:100vh;display:flex;flex-direction:column;justify-content:center">
-  <div class="kicker">Project</div>
-  <h2 class="section-title">Blackout Robotics — Centerstage</h2>
+
+<div class="case">
+
+<section class="case-hero in">
+  <div class="kicker rv">FTC 19280 · UK235 — Centerstage · 2023–24</div>
+  <h2 class="section-title rv dl1">Blackout Robotics — Centerstage</h2>
   <div class="rule" style="transform:scaleX(1)"></div>
-  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-dim);letter-spacing:.08em">FTC — 19280 · UK235 · 2023–24</p>
-  <p style="color:var(--ink-dim);margin-top:26px;max-width:640px">Full project write-up coming soon —
-  photos, CAD, design decisions and lessons learned.</p>
+  <div class="split wide-r">
+    <div>
+      <div class="contribs rv dl1">WITH <a href="https://www.linkedin.com/in/ryan-ganguli-087910319/" target="_blank" rel="noopener">Ryan Ganguli</a> · <a href="https://www.linkedin.com/in/harshiv-puri-4500202b2/" target="_blank" rel="noopener">Harshiv Puri</a> · <a href="https://www.linkedin.com/in/otto-skibeli-881054358/" target="_blank" rel="noopener">Otto Skibeli</a> · Sebastian Seminara · Sam Sarkar</div>
+      <p class="rv dl2" style="margin-top:18px">Centerstage was scored by placing hexagonal pixels on an angled backdrop, with bonuses
+      for completing coloured mosaics and crossing height lines. Instead of guessing where the
+      points were, we <b>measured our realistic cycle count through driver practice</b> and
+      designed the robot around an optimised scoring layout.</p>
+      <p class="rv dl2">The season ended with the <b>UK National Championship</b> and <b>UK Control Award</b> —
+      and earned me the <b>FIRST Dean's List Award</b>.</p>
+      <div class="case-meta awards rv dl3">
+        <span class="award special">FRC Dean's List Award — 1884</span>
+        <span class="award">UK National Champions</span>
+        <span class="award">UK Control Award</span>
+        <span class="award">South East Regional — Winning Alliance Captain</span>
+        <span class="award">South East Regional — Inspire Award</span>
+      </div>
+    </div>
+    <figure class="rv-r dl1">
+      <img src="../photos/blackout/s2-hero.png" alt="Centerstage robot">
+      <figcaption>Nationals build</figcaption>
+    </figure>
+  </div>
 </section>
+
+<section class="watch">
+  <div class="kicker rv">01 — Reveal</div>
+  <h2 class="section-title rv dl1">Robot Reveal</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <figure class="rv dl1" style="max-width:860px;margin:10px auto 0">
+    <video src="../photos/blackout/s2-reveal.mp4" controls muted playsinline preload="metadata"></video>
+    <figcaption>Season reveal — Centerstage 2023–24</figcaption>
+  </figure>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">02 — Strategy</div>
+  <h2 class="section-title rv dl1">Game Analysis &amp; Strategy</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <div class="rv-l dl1">
+      <p>Through repeated driver practice we measured the realistic maximum number of pixels
+      we could cycle in a match — then designed an <b>optimised scoring layout around that
+      number</b>: reaching the highest achievable set line while maximising mosaic count, so
+      every pixel we placed was worth as much as possible.</p>
+      <p>The field itself imposed constraints the robot had to answer. Every cycle passed
+      under or through the central truss, which capped the robot's height and shaped the
+      chassis profile, and the endgame — launching a paper drone out of the field and
+      climbing the truss — had to be served without compromising cycle speed.</p>
+      <p>As Lead Designer and team coach I supported the wider CAD and build process while
+      developing the younger members who'd inherit the team, contributing directly to the
+      intake and drivetrain mechanisms.</p>
+    </div>
+    <div class="spec-list rv-r dl2">
+      <div class="spec-item"><div class="t">Intake</div><div class="d">Four-bar extends beyond the frame perimeter; jagged TPU rollers pull pixels in positively</div></div>
+      <div class="spec-item"><div class="t">Bottom feed roller</div><div class="d">Counter-rolling bar presses pixels up into the grip zone — near-lossless collection at speed</div></div>
+      <div class="spec-item"><div class="t">Two-stage outtake</div><div class="d">Independent release arms drop pixels one at a time — two backdrop positions per cycle for mosaics</div></div>
+      <div class="spec-item"><div class="t">Geometry</div><div class="d">Low enough to drive under the truss; slanted front wedges the gate open; slides angled to match the backdrop</div></div>
+      <div class="spec-item"><div class="t">Navigation</div><div class="d">Dead-wheel odometry localises the robot anywhere on the field for repeatable autonomous scoring</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">03 — Design</div>
+  <h2 class="section-title rv dl1">Mechanism Design</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split wide-l">
+    <figure class="rv-l dl1">
+      <img src="../photos/blackout/s2-cad-iso.png" alt="Robot CAD — iso view" loading="lazy">
+      <figcaption>Full assembly CAD — nationals revision</figcaption>
+    </figure>
+    <div class="rv-r dl2">
+      <p>The robot won on the accumulation of small, deliberate optimisations rather than any
+      single mechanism. The four-bar intake deployed beyond the frame perimeter so we never
+      drove the chassis onto pixels, and the bottom feed roller <b>actively pressed pixels into
+      the rollers' grip zone</b> instead of letting them skate underneath — one small addition
+      that made collection near-lossless at speed.</p>
+      <p>On the scoring side, two independent release arms dropped pixels one at a time, so
+      differently coloured pixels could land on different backdrop sections <b>in a single
+      cycle</b> — essential for building mosaics efficiently. The slides were angled to match
+      the backdrop's incline, so pixels arrived at the board already at placement angle.</p>
+    </div>
+  </div>
+  <div class="fig-row portrait">
+    <figure class="rv dl1"><video src="../photos/blackout/s2-cad-reveal.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>CAD walkthrough</figcaption></figure>
+    <figure class="rv dl2"><video src="../photos/blackout/s2-auton.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Autonomous testing — odometry</figcaption></figure>
+  </div>
+  <figure class="rv dl3" style="max-width:860px;margin:26px auto 0">
+    <video src="../photos/blackout/s2-scoring.mp4" controls muted loop playsinline preload="metadata"></video>
+    <figcaption>Scoring cycle testing</figcaption>
+  </figure>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">04 — Results</div>
+  <h2 class="section-title rv dl1">Competition Results</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="fig-row">
+    <figure class="rv dl1"><img src="../photos/blackout/s2-build.jpg" alt="Final competition build" loading="lazy"><figcaption>Final competition build</figcaption></figure>
+    <figure class="rv dl2 fill"><img src="../photos/gallery/4.jpg" alt="2024 finals match" loading="lazy"><figcaption>2024 Finals</figcaption></figure>
+    <figure class="rv dl3 fill"><img src="../photos/gallery/6.jpg" alt="2024 UK National Champions" loading="lazy"><figcaption>UK National Champions 2024</figcaption></figure>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">05 — Lessons</div>
+  <h2 class="section-title rv dl1">Lessons Learned</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <p class="rv-l dl1"><b>Specify structural parts for impact, not just function.</b> A mid-match collision with
+    another robot snapped our PLA intake extension — a critical failure that degraded scoring
+    for the rest of the event. Printed PLA was fine for the loads we designed for, but not for
+    the loads another 15&nbsp;kg robot delivers; load-bearing extremities need tougher materials
+    or engineered failure points.</p>
+    <p class="rv-r dl1"><b>Complexity has to earn its place.</b> Some of our toughest competition ran far simpler
+    robots — basic claws that never jammed, collected reliably, and placed without drama. Our
+    optimisation-heavy design scored faster when everything worked, but the season was a lasting
+    reminder that reliability compounds: the best mechanism is often the simplest one that meets
+    the requirement.</p>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">06 — Repository</div>
+  <h2 class="section-title rv dl1">CAD &amp; Repository</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <p class="rv dl1" style="max-width:760px">The complete assembly STEP, CAD screenshots and season footage are open on GitHub.</p>
+  <a class="repo-link rv dl2" href="https://github.com/XavierGoff/blackout-2024-robot-cad" target="_blank" rel="noopener">View the repository ↗</a>
+  <a class="repo-link rv dl2" href="blackout-power-play.html" style="margin-left:14px">← Previous season: Power Play</a>
+</section>
+
+</div>
+
+<div class="back-row"><a class="repo-link" href="../index.html#projects">← Back to all projects</a></div>
+
 <footer>
   <span>© 2026 XAVIER GOFF</span>
   <span>DESIGNED BY XAVIER · CODED WITH <a class="credit" href="https://claude.ai" target="_blank" rel="noopener">CLAUDE</a></span>
 </footer>
+
+<script>
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+document.querySelectorAll('section.watch').forEach(s => io.observe(s));
+</script>
 </body>
 </html>
