@@ -4,36 +4,226 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Electronics Car Race — Xavier Goff</title>
+<meta name="description" content="DE1 Electronics Grand Prix race car — 2nd of 23, ESP32 + MicroPython, custom four-bar steering.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css?v=2">
+<style>
+.case section{padding:80px 8vw;overflow-x:clip}
+.case section.case-hero{padding-top:170px}
+.case p{color:var(--ink-dim);margin-bottom:16px}
+.case p b{color:var(--ink);font-weight:500}
+.case-meta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 8px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;margin-top:10px}
+.split > *{min-width:0}
+.split.wide-r{grid-template-columns:1fr 1.15fr}
+.split.wide-l{grid-template-columns:1.15fr 1fr}
+@media(max-width:900px){.split,.split.wide-r,.split.wide-l{grid-template-columns:1fr}}
+figure{border:1px solid var(--line);background:#fff;padding:10px 10px 0;margin:0}
+figure img,figure video{width:100%;display:block}
+figcaption{padding:11px 4px;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;margin-top:40px}
+.fig-row.portrait{max-width:680px;margin-left:auto;margin-right:auto}
+.fig-duo2{display:grid;grid-template-columns:1.05fr 1fr;gap:26px;margin-top:40px;align-items:start;max-width:920px;margin-left:auto;margin-right:auto}
+.fig-duo2 .stack{display:grid;gap:26px}
+@media(max-width:900px){.fig-duo2{grid-template-columns:1fr}}
+.spec-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.spec-item{background:var(--bg-2);padding:16px 18px}
+.spec-item .t{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.spec-item .d{font-size:.92rem;color:var(--ink-dim)}
+.repo-link{display:inline-block;margin-top:20px;font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);padding:13px 26px;transition:all .3s}
+.repo-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+.back-row{padding:0 8vw 90px;max-width:1200px;margin:0 auto}
+.rv,.rv-l,.rv-r{opacity:0;transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1)}
+.rv{transform:translateY(34px)}
+.rv-l{transform:translateX(-46px)}
+.rv-r{transform:translateX(46px)}
+.in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
+.in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+</style>
 </head>
 <body>
 <div class="grid-bg"></div>
 <nav>
   <a href="../index.html" aria-label="Home">
     <svg class="nav-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <path d="M26 23 L54 45 L75 77 L47 54 Z"/>
-      <path d="M76 24 L58 42 L66 50 Z"/>
-      <path d="M24 76 L42 58 L34 50 Z"/>
+      <path d="M26 23 L54 45 L75 77 L47 54 Z"/><path d="M76 24 L58 42 L66 50 Z"/><path d="M24 76 L42 58 L34 50 Z"/>
     </svg>
   </a>
-  <div class="nav-links">
-    <a href="../index.html#projects">← All Projects</a>
-  </div>
+  <div class="nav-links"><a href="../index.html#projects">← All Projects</a></div>
 </nav>
-<section style="min-height:100vh;display:flex;flex-direction:column;justify-content:center">
-  <div class="kicker">Project</div>
-  <h2 class="section-title">Electronics Car Race</h2>
+
+<div class="case">
+
+<section class="case-hero in">
+  <div class="kicker rv">Electronics 1 — Imperial College London · 2025–26</div>
+  <h2 class="section-title rv dl1">Electronics Car Race</h2>
   <div class="rule" style="transform:scaleX(1)"></div>
-  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-dim);letter-spacing:.08em">Electronics — Imperial College London</p>
-  <p style="color:var(--ink-dim);margin-top:26px;max-width:640px">Full project write-up coming soon —
-  photos, CAD, design decisions and lessons learned.</p>
+  <div class="split wide-r">
+    <div>
+      <div class="contribs rv dl1">WITH <a href="https://www.linkedin.com/in/sebastian-khan-hummel-376712317/" target="_blank" rel="noopener">Sebastian Khan Hummel</a> · <a href="https://www.linkedin.com/in/tomas-markey-083358249/" target="_blank" rel="noopener">Tomas Markey</a> · Musa Ali Sajjad</div>
+      <p class="rv dl2" style="margin-top:18px">The DE1 Electronics Grand Prix: build a phone-controlled electric car and race it
+      against the entire year group on a zig-zag classroom circuit. Ours ran
+      <b>MicroPython on a Heltec ESP32</b>, drove its 12&nbsp;V motors over-volted to
+      ~18&nbsp;V, and steered through a custom <b>servo-driven four-bar mechanism</b>
+      instead of relying on differential drive alone.</p>
+      <p class="rv dl2">A 31.26&nbsp;s qualifying lap put us in the head-to-head final —
+      finishing <b>2nd of 23 cars</b>, with a Grade&nbsp;A for the project.</p>
+      <div class="case-meta awards rv dl3">
+        <span class="award special">2nd Place — Year Group Race</span>
+        <span class="award">Grade: A</span>
+      </div>
+    </div>
+    <figure class="rv-r dl1">
+      <img src="../photos/decar/hero.jpg" alt="The finished race car">
+      <figcaption>The finished car — race ready</figcaption>
+    </figure>
+  </div>
 </section>
+
+<section class="watch">
+  <div class="kicker rv">01 — Showcase</div>
+  <h2 class="section-title rv dl1">Car Showcase</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <figure class="rv dl1" style="max-width:860px;margin:10px auto 0">
+    <video src="../photos/decar/showcase.mp4" controls muted loop playsinline preload="metadata"></video>
+    <figcaption>Final car showcase</figcaption>
+  </figure>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">02 — Strategy</div>
+  <h2 class="section-title rv dl1">Race Analysis &amp; Strategy</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <div class="rv-l dl1">
+      <p>The circuit zig-zagged around a classroom with three straightaways. Qualifying was by
+      lap time; the three fastest cars then raced head-to-head. That format rewarded two
+      things — top speed on the straights, and controlled, repeatable cornering through
+      the zig-zags.</p>
+      <p>We attacked both. For the straights, the motors were rated 12&nbsp;V but we ran them
+      from two 9&nbsp;V batteries in series at ~16–18&nbsp;V — sourcing our own DRV8871
+      H-bridges with the headroom to take it, rather than the standard drivers. For the
+      corners, we built genuine mechanical steering so cornering didn't depend on wheel-speed
+      guesswork.</p>
+      <p>I designed the car's base and chassis layout in CAD — packaging the motors, batteries,
+      wiring and bodywork within the size constraints — and we built the electronics together
+      through soldering, wiring and the power/control architecture.</p>
+    </div>
+    <div class="spec-list rv-r dl2">
+      <div class="spec-item"><div class="t">Drive</div><div class="d">2× DC motors over-volted from 12&nbsp;V to ~16–18&nbsp;V for straight-line speed</div></div>
+      <div class="spec-item"><div class="t">Motor drivers</div><div class="d">2× DRV8871 H-bridges — one per motor, selected for over-voltage headroom</div></div>
+      <div class="spec-item"><div class="t">Steering</div><div class="d">SG90 servo rotates a parallel bar, pivoting both front motor mounts as a four-bar</div></div>
+      <div class="spec-item"><div class="t">Control</div><div class="d">Phone over Bluetooth LE — MicroPython Nordic UART service on the ESP32</div></div>
+      <div class="spec-item"><div class="t">Power</div><div class="d">2× 9&nbsp;V in series feed the motor rail; a step-down module taps 5&nbsp;V for the ESP32</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">03 — Design</div>
+  <h2 class="section-title rv dl1">Mechanical &amp; Electrical Design</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split wide-l">
+    <figure class="rv-l dl1">
+      <img src="../photos/decar/cad-iso.png" alt="Full car CAD assembly" loading="lazy">
+      <figcaption>Full assembly CAD — with electronics placement</figcaption>
+    </figure>
+    <div class="rv-r dl2">
+      <p>The chassis was CAD-modelled with the electronics in the assembly, not added
+      afterwards — motor positions, battery placement, perfboard footprint and wiring space
+      were all packaged together, which kept the weight balanced and the build free of
+      surprises.</p>
+      <p>Five custom parts were printed: the main chassis, front motor mounts, steering axle,
+      cross beam and anchored top panel.</p>
+    </div>
+  </div>
+  <div class="split wide-r">
+    <div class="rv-l dl1">
+      <p>The steering is a <b>parallel four-bar</b>: the front motors mount on pivoting axles,
+      linked by a parallel bar, and the SG90 rotates a second bar that swings the whole linkage
+      — so both front wheels steer together at the same angle.</p>
+      <p>The firmware completes the mechanism. When the servo steers, the outer wheel is driven
+      faster than the inner (850 vs 700 of 1023 PWM duty) to match the turning radius — the
+      drivetrain pulls the car around the corner instead of fighting the geometry.</p>
+    </div>
+    <figure class="rv-r dl2">
+      <img src="../photos/decar/cad-steering.png" alt="Steering assembly CAD" loading="lazy">
+      <figcaption>Steering assembly — servo-driven four-bar</figcaption>
+    </figure>
+  </div>
+  <div class="fig-duo2">
+    <figure class="rv dl1"><video src="../photos/decar/steering-assembly-test.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Steering four-bar in motion</figcaption></figure>
+    <div class="stack">
+      <figure class="rv dl2"><video src="../photos/decar/drive-steering-testing.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Drive + steering testing</figcaption></figure>
+      <figure class="rv dl3"><img src="../photos/decar/wiring-landscape.png" alt="Wiring diagram" loading="lazy"><figcaption>Wiring diagram</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">04 — Results</div>
+  <h2 class="section-title rv dl1">Competition Results</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split wide-l">
+    <div class="rv-l dl1">
+      <figure style="margin-bottom:26px">
+        <img src="../photos/decar/car-side.jpg" alt="Car side view" loading="lazy">
+        <figcaption>Side profile</figcaption>
+      </figure>
+      <p>Qualifying: <b>31.26&nbsp;s</b> — second-fastest lap of all 23 cars, and a place in
+      the three-car head-to-head final.</p>
+      <p>The final came down to the last metre. Leading into the closing stretch, we clipped
+      a chair one metre before the line and finished second. The whole thing — pace,
+      contact, and all — is preserved in the race footage.</p>
+    </div>
+    <figure class="rv-r dl2" style="max-width:340px;justify-self:center">
+      <video src="../photos/decar/final-race.mp4" controls muted playsinline preload="metadata"></video>
+      <figcaption>The head-to-head final</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">05 — Lessons</div>
+  <h2 class="section-title rv dl1">Lessons Learned</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <div class="split">
+    <p class="rv-l dl1"><b>Design for the environment, not just the course.</b> The car was optimised entirely
+    for speed on the racing line, with nothing to manage contact when the line failed — and a
+    chair ended our race a metre from the win. Angled deflection surfaces on the front corners
+    would have cost almost nothing in weight and turned a race-ending snag into a glancing
+    bounce.</p>
+    <p class="rv-r dl1"><b>Calculated over-stress works when the whole chain is rated for it.</b> Over-volting
+    the motors gave us real straight-line pace, but only because every downstream component —
+    H-bridges, wiring, power regulation — was chosen to handle it. The speed came from the
+    spreadsheet, not from luck.</p>
+  </div>
+</section>
+
+<section class="watch">
+  <div class="kicker rv">06 — Repository</div>
+  <h2 class="section-title rv dl1">CAD, Firmware &amp; Repository</h2>
+  <div class="rule" style="transform:scaleX(1)"></div>
+  <p class="rv dl1" style="max-width:760px">The full CAD (assembly + custom parts), MicroPython firmware, wiring diagram, pinout table and race footage are open on GitHub.</p>
+  <a class="repo-link rv dl2" href="https://github.com/XavierGoff/Electronics-Car-Race" target="_blank" rel="noopener">View the repository ↗</a>
+</section>
+
+</div>
+
+<div class="back-row"><a class="repo-link" href="../index.html#projects">← Back to all projects</a></div>
+
 <footer>
   <span>© 2026 XAVIER GOFF</span>
   <span>DESIGNED BY XAVIER · CODED WITH <a class="credit" href="https://claude.ai" target="_blank" rel="noopener">CLAUDE</a></span>
 </footer>
+
+<script>
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+document.querySelectorAll('section.watch').forEach(s => io.observe(s));
+</script>
 </body>
 </html>
