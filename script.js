@@ -114,9 +114,9 @@ const SKILLS = [
   { cat: "Elec", name: "Circuit Design" },
   { cat: "Elec", name: "Soldering / PCB" },
   { cat: "CAD",  name: "Onshape" },
-  { cat: "Code", name: "Vibecoding" },
-  { cat: "Elec", name: "PCB Design" },
   { cat: "Code", name: "Java" },
+  { cat: "Elec", name: "PCB Design" },
+  { cat: "Code", name: "Vibecoding" },
   { cat: "Fab",  name: "Laser Cutting" },
   { cat: "Tools", name: "Excel" },
   { cat: "Team", name: "Mentoring" }
@@ -246,7 +246,8 @@ document.getElementById('skills-grid').innerHTML = SKILLS.map(s =>
   `<div class="skill reveal" data-cat="${s.cat}"><div class="s-cat">${s.cat}</div><div class="s-name">${s.name}</div></div>`
 ).join('');
 
-/* ---------- 3D tilt: skill cards lift toward the cursor ---------- */
+/* ---------- 3D tilt: skill cards lift toward the cursor (desktop only) ---------- */
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches)
 document.querySelectorAll('.skill').forEach(card => {
   card.addEventListener('mouseenter', () => {
     card.style.transition = 'box-shadow .25s';          /* transform follows raw, zero lag */

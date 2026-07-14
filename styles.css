@@ -341,8 +341,8 @@ footer{
   transform:scale(.99);
   transition:opacity 1.15s cubic-bezier(.25,.1,.25,1), transform 1.15s cubic-bezier(.25,.1,.25,1);
 }
-.proj-img:hover .hover-img{opacity:1;transform:scale(1)}
-.proj-img:hover .base-img{opacity:0}
+.proj:hover .proj-img .hover-img{opacity:1;transform:scale(1)}
+.proj:hover .proj-img .base-img{opacity:0}
 
 /* ---------- highlighted personal award ---------- */
 .award.special{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -370,14 +370,14 @@ footer{
   transform-origin:bottom center;
   transition:opacity 1.1s cubic-bezier(.25,.1,.25,1), transform 1.1s cubic-bezier(.25,.1,.25,1);
 }
-.proj-img.expand:hover .base-img{opacity:0;transform:scale(.92)}   /* zooms out as it hands over */
+.proj:hover .proj-img.expand .base-img{opacity:0;transform:scale(.92)}   /* zooms out as it hands over */
 .proj-img.expand .hover-img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
   transform-origin:bottom center;
   transform:scale(.78);opacity:0;
   transition:opacity 1.1s cubic-bezier(.25,.1,.25,1), transform 1.1s cubic-bezier(.25,.1,.25,1);
 }
-.proj-img.expand:hover .hover-img{opacity:1;transform:scale(1)}    /* grows up from the base */
+.proj:hover .proj-img.expand .hover-img{opacity:1;transform:scale(1)}    /* grows up from the base */
 
 /* ---------- nav projects dropdown ---------- */
 .nav-drop{position:relative;display:flex;align-items:center}
@@ -417,3 +417,9 @@ footer{
 
 /* instantly snap reveals to hidden (used when replaying section entrances) */
 .no-anim .reveal, .no-anim .rule{transition:none !important}
+
+/* ---------- about stats: phone layout ---------- */
+@media(max-width:640px){
+  .spec-sheet{grid-template-columns:1fr 1fr}
+  .spec:first-child{grid-column:1/-1}
+}

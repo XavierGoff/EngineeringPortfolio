@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=2">
+<link rel="stylesheet" href="../styles.css?v=3">
 <style>
 /* ---------- page-local styles ---------- */
 .case section{padding:80px 8vw;overflow-x:clip}
@@ -42,17 +42,25 @@ figure.plain img{object-fit:contain}
 .arch{
   margin-top:34px;border:1px solid var(--line);background:var(--bg-2);padding:26px 20px;
   font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink-dim);
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;text-align:center;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:28px;text-align:center;
 }
-.arch .node{border:1.5px solid var(--ink);padding:10px 16px;color:var(--ink);background:#fff}
+.arch .node{color:var(--accent);font-weight:500;letter-spacing:.12em}
 .arch .link{color:var(--accent);white-space:nowrap}
+.arch .ar{color:var(--accent);font-weight:400;font-size:14px}
 .arch .link b{font-weight:400}
 @media(max-width:640px){
-  .arch{flex-direction:column;gap:10px}
-  .arch .link .ar{display:inline-block;transform:rotate(90deg)}
+  .arch{flex-direction:column;gap:12px}
+  .arch .ar{display:inline-block;transform:rotate(90deg)}
 }
 
 /* ---------- report carousels ---------- */
+.carousel .frame img{cursor:zoom-in}
+.carousel.expanded{position:fixed;inset:3vh 4vw;z-index:320;display:flex;flex-direction:column;box-shadow:0 40px 90px rgba(0,0,0,.4)}
+.carousel.expanded .frame{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.carousel.expanded .frame img{width:auto;height:100%;max-width:100%;object-fit:contain;margin:0 auto;cursor:zoom-out}
+.carousel-backdrop{position:fixed;inset:0;background:rgba(23,24,26,.65);z-index:310;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.carousel-backdrop.open{opacity:1;pointer-events:auto}
+
 .carousel{border:1px solid var(--line);background:#fff;padding:12px}
 .carousel .frame{position:relative;overflow:hidden}
 .carousel img{width:100%;display:block;transition:opacity .3s ease}
@@ -152,7 +160,7 @@ figure.plain img{object-fit:contain}
 .pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:stretch;margin-top:10px}
 .pp-grid > *{min-width:0}
 .pp-tall{display:flex;flex-direction:column}
-.pp-tall img{flex:1;height:100%;object-fit:cover;min-height:0}
+.pp-tall img{flex:1;height:100%;object-fit:contain;min-height:0}
 @media(max-width:900px){.pp-grid{grid-template-columns:1fr}.pp-tall img{height:auto}}
 
 /* ---------- scroll-in transitions ---------- */
@@ -162,6 +170,12 @@ figure.plain img{object-fit:contain}
 .rv-r{transform:translateX(46px)}
 .in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
 .in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+
+/* lightbox: click any image to expand */
+.case figure img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(23,24,26,.92);display:flex;align-items:center;justify-content:center;padding:4vh 4vw;cursor:zoom-out;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.lightbox.open{opacity:1;pointer-events:auto}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;padding:8px;border:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -232,9 +246,13 @@ figure.plain img{object-fit:contain}
   </div>
   <div class="arch rv dl2">
     <span class="node">STUDENT PAD ESP32</span>
-    <span class="link">— Wi-Fi WEBSOCKET <b class="ar">→</b></span>
+    <b class="ar">→</b>
+    <span class="link">Wi-Fi WEBSOCKET</span>
+    <b class="ar">→</b>
     <span class="node">PYTHON BRIDGE</span>
-    <span class="link">— WEBSOCKET <b class="ar">→</b></span>
+    <b class="ar">→</b>
+    <span class="link">WEBSOCKET</span>
+    <b class="ar">→</b>
     <span class="node">LECTURER OVERLAY</span>
   </div>
 
@@ -396,7 +414,7 @@ score += (target − score) * <span class="k">0.05</span>                  <span
   <div class="kicker rv">04 — Reports</div>
   <h2 class="section-title rv dl1">The Full Story</h2>
   <div class="rule" style="transform:scaleX(1)"></div>
-  <p class="rv dl1" style="max-width:760px">The complete design process is documented in two reports — flip through them here.
+  <p class="rv dl1">The complete design process is documented in two reports — flip through them here.
   <b>Discovery</b> covers research, interviews and concept selection; <b>Delivery</b> covers
   prototyping, electronics, software and user testing.</p>
   <div class="carousel-row">
@@ -449,9 +467,20 @@ const io = new IntersectionObserver(es => {
 document.querySelectorAll('section.watch').forEach(s => io.observe(s));
 
 /* ---------- report carousels ---------- */
+const cbBackdrop = document.createElement('div');
+cbBackdrop.className = 'carousel-backdrop';
+document.body.appendChild(cbBackdrop);
+cbBackdrop.addEventListener('click', () => {
+  document.querySelectorAll('.carousel.expanded').forEach(c => c.classList.remove('expanded'));
+  cbBackdrop.classList.remove('open');
+});
 function initCarousel(rootId, base, count) {
   const root = document.getElementById(rootId);
   const img = root.querySelector('img');
+  img.addEventListener('click', () => {
+    root.classList.toggle('expanded');
+    cbBackdrop.classList.toggle('open', root.classList.contains('expanded'));
+  });
   const counter = root.querySelector('.c-count');
   let i = 0;
   const src = n => `${base}page-${String(n + 1).padStart(2, '0')}.jpg`;
@@ -507,6 +536,19 @@ function tlLoop() {
   requestAnimationFrame(tlLoop);
 }
 requestAnimationFrame(tlLoop);
+</script>
+<script>
+(() => {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = '<img alt="">';
+  document.body.appendChild(lb);
+  const lbImg = lb.querySelector('img');
+  document.querySelectorAll('.case figure img').forEach(im => {
+    im.addEventListener('click', () => { lbImg.src = im.src; lb.classList.add('open'); });
+  });
+  lb.addEventListener('click', () => lb.classList.remove('open'));
+})();
 </script>
 </body>
 </html>

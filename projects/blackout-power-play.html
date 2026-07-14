@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=2">
+<link rel="stylesheet" href="../styles.css?v=3">
 <style>
 .case section{padding:80px 8vw;overflow-x:clip}
 .case section.case-hero{padding-top:170px}
@@ -37,6 +37,15 @@ figcaption{padding:11px 4px;text-align:center;font-family:var(--font-mono);font-
 .rv-r{transform:translateX(46px)}
 .in .rv,.in .rv-l,.in .rv-r{opacity:1;transform:none}
 .in .dl1{transition-delay:.15s}.in .dl2{transition-delay:.3s}.in .dl3{transition-delay:.45s}
+
+/* lightbox: click any image to expand */
+.case figure img{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(23,24,26,.92);display:flex;align-items:center;justify-content:center;padding:4vh 4vw;cursor:zoom-out;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.lightbox.open{opacity:1;pointer-events:auto}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;padding:8px;border:1px solid var(--line)}
+
+.repo-link.ml2{margin-left:14px}
+@media(max-width:640px){.repo-link.ml2{margin-left:0}}
 </style>
 </head>
 <body>
@@ -59,8 +68,8 @@ figcaption{padding:11px 4px;text-align:center;font-family:var(--font-mono);font-
   <div class="split wide-r">
     <div>
       <div class="contribs rv dl1">WITH <a href="https://www.linkedin.com/in/ryan-ganguli-087910319/" target="_blank" rel="noopener">Ryan Ganguli</a> · <a href="https://www.linkedin.com/in/harshiv-puri-4500202b2/" target="_blank" rel="noopener">Harshiv Puri</a></div>
-      <p class="rv dl2" style="margin-top:18px">Power Play was won on cones: scoring them onto junctions of varying heights, with
-      ownership bonuses for finishing on top. Our robot was built around a
+      <p class="rv dl2" style="margin-top:18px">Power Play was scored by placing cones onto junctions of varying heights, with
+      ownership bonuses for finishing with your cone on top. Our robot was built around a
       <b>pass-through architecture</b> — intake a cone on one side, score it on the other,
       never rotate between stack and junction.</p>
       <p class="rv dl2">Cutting that turn out of every cycle was the single biggest contributor to our cycle
@@ -167,7 +176,7 @@ figcaption{padding:11px 4px;text-align:center;font-family:var(--font-mono);font-
   <div class="rule" style="transform:scaleX(1)"></div>
   <p class="rv dl1" style="max-width:760px">The complete assembly STEP, CAD screenshots and season footage are open on GitHub.</p>
   <a class="repo-link rv dl2" href="https://github.com/XavierGoff/blackout-2023-robot-cad" target="_blank" rel="noopener">View the repository ↗</a>
-  <a class="repo-link rv dl2" href="blackout-centerstage.html" style="margin-left:14px">Next season: Centerstage →</a>
+  <a class="repo-link ml2 rv dl2" href="blackout-centerstage.html">Next season: Centerstage →</a>
 </section>
 
 </div>
@@ -184,6 +193,19 @@ const io = new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
 document.querySelectorAll('section.watch').forEach(s => io.observe(s));
+</script>
+<script>
+(() => {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = '<img alt="">';
+  document.body.appendChild(lb);
+  const lbImg = lb.querySelector('img');
+  document.querySelectorAll('.case figure img').forEach(im => {
+    im.addEventListener('click', () => { lbImg.src = im.src; lb.classList.add('open'); });
+  });
+  lb.addEventListener('click', () => lb.classList.remove('open'));
+})();
 </script>
 </body>
 </html>
