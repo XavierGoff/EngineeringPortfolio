@@ -510,3 +510,23 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (el) { e.preventDefault(); smoothJump(el); }
   });
 });
+
+/* ---------- scrollspy: keep the URL hash in sync while scrolling ---------- */
+const spySections = ['about', 'projects', 'experience', 'skills', 'gallery', 'contact']
+  .map(id => document.getElementById(id)).filter(Boolean);
+let spyQueued = false;
+function spyUpdate() {
+  spyQueued = false;
+  const probe = window.innerHeight * 0.35;          /* section "active" once its top passes 35% of the viewport */
+  let current = '';
+  for (const s of spySections) {
+    if (s.getBoundingClientRect().top <= probe) current = '#' + s.id;
+  }
+  if (window.scrollY < 10) current = '';            /* back at the hero: clear the hash */
+  if (current !== location.hash) {
+    history.replaceState(null, '', current || location.pathname + location.search);
+  }
+}
+window.addEventListener('scroll', () => {
+  if (!spyQueued) { spyQueued = true; requestAnimationFrame(spyUpdate); }
+}, { passive: true });
