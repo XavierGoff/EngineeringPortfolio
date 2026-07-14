@@ -530,3 +530,19 @@ function spyUpdate() {
 window.addEventListener('scroll', () => {
   if (!spyQueued) { spyQueued = true; requestAnimationFrame(spyUpdate); }
 }, { passive: true });
+
+/* ---------- anchor fix: re-snap to the hash once dynamic content has rendered ---------- */
+if (location.hash) {
+  const anchorTarget = document.querySelector(location.hash);
+  if (anchorTarget) {
+    let userScrolled = false;
+    window.addEventListener('wheel', () => userScrolled = true, { once: true, passive: true });
+    window.addEventListener('touchstart', () => userScrolled = true, { once: true, passive: true });
+    /* jump now that the project cards exist... */
+    anchorTarget.scrollIntoView({ behavior: 'instant' });
+    /* ...and again once images have loaded and pushed the layout around */
+    window.addEventListener('load', () => {
+      if (!userScrolled) anchorTarget.scrollIntoView({ behavior: 'instant' });
+    });
+  }
+}
