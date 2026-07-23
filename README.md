@@ -1,24 +1,25 @@
 # Xavier Goff — Engineering Portfolio
 
-Personal engineering portfolio: projects, robotics seasons, skills, and contact.
+My personal engineering portfolio: robotics seasons, university projects, skills, and contact.
 
-**Live site:** _add your Vercel/GitHub Pages URL here after deploying_
+**Live site:** [xaviergoff.com](https://xaviergoff.com)
 
-## Stack
+## About
 
-Plain HTML/CSS/JS — no frameworks, no build step. `index.html` (structure) + `styles.css` (design) + `script.js` (content data & animations). Open `index.html` in a browser and it runs.
+A hand-built static site — plain HTML, CSS and JavaScript, no frameworks and no build step. The homepage presents each project as a card, and every major project links to a full case-study page covering the design strategy, engineering decisions, media and a link to its own GitHub repository.
 
-## Editing
+## Structure
 
-- **Add a project:** open `script.js`, find the `PROJECTS` array at the top, copy one block, edit the fields. Set `image: "photos/name.jpg"` to use a real photo (put the file in a `photos/` folder next to `index.html`).
-- **Skills:** same idea — edit the `SKILLS` array in `script.js`.
-- **Colors/theme:** all colors are CSS variables at the top of `styles.css`.
-- **Logo:** vector paths live in the nav `<svg>` and the sketch divider `<svg>`.
+- `index.html` — homepage: hero, about, projects, experience, skills, gallery, contact
+- `styles.css` — all styling and theme colours (CSS variables at the top)
+- `script.js` — project/skill/experience data and all animations
+- `projects/` — individual case-study pages
+- `photos/` — images and video used across the site
 
-## Alternate themes
+## Hosting
 
-Kept for reference: `index-blueprint.html`, `index-circuit.html`, `index-workshop.html`, `index-light.html`.
+Hosted on [Vercel](https://vercel.com) and served at [xaviergoff.com](https://xaviergoff.com). Every push to `main` deploys automatically.
 
-## Deploying
+## License
 
-Pushed commits auto-deploy if the repo is connected to [Vercel](https://vercel.com) (free). Alternatively enable GitHub Pages: repo Settings → Pages → deploy from `main`.
+© Xavier Goff. Code is free to reference; project content, images and branding are not for reuse.
